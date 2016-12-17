@@ -1,0 +1,22 @@
+[
+  {
+    "name": "feature \t🌟  A new feature",
+    "value": ":star2:"
+  },
+  {
+    "name": "fix \t\t🐞  A bug fix",
+    "value": ":beetle:"
+  },
+  {
+    "name": "docs \t\t📚  Documentation change",
+    "value": ":books:"
+  },
+  {
+    "name": "refactor \t🎨  A code refactoring change",
+    "value": ":art:"
+  },
+  {
+    "name": "chore \t🔩  A chore change",
+    "value": ":nut_and_bolt:"
+  }
+]

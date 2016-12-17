@@ -1,0 +1,26 @@
+{
+  "name": "cz-emoji",
+  "version": "0.0.0",
+  "description": "Commitizen adapter for customizable emoji powered commit messages.",
+  "author": "Nicolas Gryman <ngryman@gmail.com> (http://ngryman.sh/)",
+  "license": "MIT",
+  "repository": "ngryman/cz-emoji",
+  "main": "index.js",
+  "engines": {
+    "node": ">=4"
+  },
+  "files": [
+    "index.js",
+    "lib/types.json"
+  ],
+  "keywords": [
+    "commitizen",
+    "adapter",
+    "emoji"
+  ],
+  "dependencies": {
+    "cli-truncate": "^0.2.1",
+    "read-pkg-up": "^2.0.0",
+    "wrap-ansi": "^2.1.0"
+  }
+}
