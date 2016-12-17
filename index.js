@@ -56,10 +56,10 @@ function createQuestions(res) {
  */
 function format(answers) {
   // parentheses are only needed when a scope is present
-  const scope = answers.scope ? '(' + answers.scope.trim() + ')' : ''
+  const scope = answers.scope ? '(' + answers.scope.trim() + ') ' : ''
 
   // build head line and limit it to 100
-  const head = truncate(answers.type + ' ' + answers.scope + ' ' + answers.subject.trim(), 100)
+  const head = truncate(answers.type + ' ' + answers.scope + answers.subject.trim(), 100)
 
   // wrap body at 100
   const body = wrap(answers.body, 100)
