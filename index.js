@@ -59,7 +59,7 @@ function format(answers) {
   const scope = answers.scope ? '(' + answers.scope.trim() + ') ' : ''
 
   // build head line and limit it to 100
-  const head = truncate(answers.type + ' ' + answers.scope + answers.subject.trim(), 100)
+  const head = truncate(answers.type + ' ' + scope + answers.subject.trim(), 100)
 
   // wrap body at 100
   const body = wrap(answers.body, 100)
