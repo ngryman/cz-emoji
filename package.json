@@ -19,7 +19,7 @@
     "emoji"
   ],
   "dependencies": {
-    "cli-truncate": "^0.2.1",
+    "cli-truncate": "^1.0.0",
     "read-pkg-up": "^2.0.0",
     "wrap-ansi": "^2.1.0"
   }
