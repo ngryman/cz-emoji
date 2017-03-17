@@ -44,7 +44,12 @@ function createQuestions(res) {
       type: 'input',
       name: 'body',
       message: 'Provide a longer description:'
-    }
+    },
+    {
+      type: 'input',
+      name: 'breaking',
+      message: 'List any breaking changes:\n'
+    },
   ]
 }
 
