@@ -1,5 +1,7 @@
 # cz-emoji
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ngryman/cz-emoji.svg)](https://greenkeeper.io/)
+
 > Commitizen adapter formatting commit messages using emojis.
 
 
