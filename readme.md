@@ -78,6 +78,9 @@ An [Inquirer.js] choices array:
 }
 ```
 
+## Examples
+
+ - https://github.com/Falieson/TRAM
 
 ## License
 
