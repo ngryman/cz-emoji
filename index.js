@@ -3,7 +3,19 @@
 const readPkg = require('read-pkg-up')
 const truncate = require('cli-truncate')
 const wrap = require('wrap-ansi')
+const pad = require('pad')
 const types = require('./lib/types')
+
+function getEmojiChoices(types) {
+  const maxNameLength = types.reduce(
+    (maxLength, type) => (type.name.length > maxLength ? type.name.length : maxLength
+  ), 0)
+
+  return types.map(choice => ({
+    name: `${pad(choice.name, maxNameLength)}  ${choice.emoji}  ${choice.description}`,
+    value: choice.code
+  }))
+}
 
 /**
  * Create inquier.js questions object trying to read `types` and `scopes` from the current project
@@ -22,7 +34,7 @@ function createQuestions(res) {
       type: 'list',
       name: 'type',
       message: "Select the type of change you're committing:",
-      choices: emojiConfig.types || types
+      choices: getEmojiChoices(emojiConfig.types || types)
     },
     {
       type: emojiConfig.scopes ? 'list' : 'input',
