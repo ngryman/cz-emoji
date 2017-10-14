@@ -31,7 +31,9 @@ $ git cz
 
 ## Customize
 
-You can customize things for a project by adding a configuration section in your `package.json`:
+By default `cz-emoji` comes preconfigured with the [Gitemoji](https://gitmoji.carloscuesta.me/) types.
+
+But you can customize things on a project basis by adding a configuration section in your `package.json`:
 
 ```json
 {
@@ -50,8 +52,10 @@ An [Inquirer.js] choices array:
     "cz-emoji": {
       "types": [
         {
-          "name": "feature \t🌟  A new feature",
-          "value": ":star2:"
+          "emoji": "🌟",
+          "code": ":star2:",
+          "description": "A new feature",
+          "name": "feature"
         }
       ]
     }
