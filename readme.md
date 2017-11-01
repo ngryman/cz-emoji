@@ -3,7 +3,7 @@
 > Commitizen adapter formatting commit messages using emojis.
 
 
-**cz-emoji** allows you to easily use emojis in your commits using [commitizen].
+**cz-emoji-xg** allows you to easily use emojis in your commits using [commitizen].
 
 ```sh
 ? Select the type of change you are committing: (Use arrow keys)
@@ -17,10 +17,10 @@
 ## Install
 
 ```bash
-npm install --global cz-emoji
+npm install --global cz-emoji-xg
 
 # set as default adapter for your projects
-echo '{ "path": "cz-emoji" }' > ~/.czrc
+echo '{ "path": "cz-emoji-xg" }' > ~/.czrc
 ```
 
 ## Usage
@@ -31,14 +31,14 @@ $ git cz
 
 ## Customize
 
-By default `cz-emoji` comes preconfigured with the [Gitemoji](https://gitmoji.carloscuesta.me/) types.
+By default `cz-emoji-xg` comes preconfigured with the [Gitemoji](https://gitmoji.carloscuesta.me/) types.
 
 But you can customize things on a project basis by adding a configuration section in your `package.json`:
 
 ```json
 {
   "config": {
-    "cz-emoji": {}
+    "cz-emoji-xg": {}
   }
 }
 ```
@@ -49,7 +49,7 @@ An [Inquirer.js] choices array:
 ```json
 {
   "config": {
-    "cz-emoji": {
+    "cz-emoji-xg": {
       "types": [
         {
           "emoji": "🌟",
@@ -71,7 +71,7 @@ An [Inquirer.js] choices array:
 ```json
 {
   "config": {
-    "cz-emoji": {
+    "cz-emoji-xg": {
       "scopes": [
         "home",
         "accounts",
@@ -85,10 +85,6 @@ An [Inquirer.js] choices array:
 ## Examples
 
  - https://github.com/Falieson/TRAM
-
-## License
-
-MIT © [Nicolas Gryman](http://ngryman.sh)
 
 
 [commitizen]: https://github.com/commitizen/cz-cli
