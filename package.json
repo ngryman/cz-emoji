@@ -1,10 +1,13 @@
 {
-  "name": "cz-emoji",
+  "name": "cz-emoji-xg",
   "version": "1.0.0",
   "description": "Commitizen adapter formatting commit messages using emojis.",
-  "author": "Nicolas Gryman <ngryman@gmail.com> (http://ngryman.sh/)",
+  "author": "xgfe",
   "license": "MIT",
-  "repository": "ngryman/cz-emoji",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xgfe/cz-emoji-xg.git"
+  },
   "main": "index.js",
   "engines": {
     "node": ">=4"
