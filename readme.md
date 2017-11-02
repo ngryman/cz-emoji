@@ -17,10 +17,10 @@
 ## Install
 
 ```bash
-npm install --global cz-emoji-xg
+npm install -g commitizen
 
-# set as default adapter for your projects
-echo '{ "path": "cz-emoji-xg" }' > ~/.czrc
+# install cz-emoji-xg locally
+commitizen init cz-emoji-xg --save-dev
 ```
 
 ## Usage
