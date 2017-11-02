@@ -1,145 +1,145 @@
 [
   {
     "emoji": "✨",
-    "code": "✨ feature",
+    "code": "feature",
     "description": "Introducing new features.",
     "name": "feature"
   },
   {
     "emoji": "🐛",
-    "code": "🐛 fix",
+    "code": "fix",
     "description": "Fixing a bug.",
     "name": "fix"
   },
   {
     "emoji": "🎨",
-    "code": "🎨 style",
+    "code": "style",
     "description": "Improving structure / format of the code.",
     "name": "style"
   },
   {
     "emoji": "🔨",
-    "code": "🔨 refactor",
+    "code": "refactor",
     "description": "Refactoring code.",
     "name": "refactor"
   },
   {
     "emoji": "📝",
-    "code": "📝 docs",
+    "code": "docs",
     "description": "Writing docs.",
     "name": "docs"
   },
   {
     "emoji": "✅",
-    "code": "✅ test",
+    "code": "test",
     "description": "Adding tests.",
     "name": "test"
   },
   {
     "emoji": "🔥",
-    "code": "🔥 prune",
+    "code": "prune",
     "description": "Removing code or files.",
     "name": "prune"
   },
   {
     "emoji": "⚡️",
-    "code": "⚡ perf️",
+    "code": "perf️",
     "description": "Improving performance.",
     "name": "perf"
   },
   {
     "emoji": "🚀",
-    "code": "🚀 deploy",
+    "code": "deploy",
     "description": "Deploying stuff.",
     "name": "deploy"
   },
   {
     "emoji": "💄",
-    "code": "💄 ui",
+    "code": "ui",
     "description": "Updating the UI and style files.",
     "name": "ui"
   },
   {
     "emoji": "🔒",
-    "code": "🔒 security",
+    "code": "security",
     "description": "Fixing security issues.",
     "name": "security"
   },
   {
     "emoji": "🔖",
-    "code": "🔖 release",
+    "code": "release",
     "description": "Releasing / Version tags.",
     "name": "release"
   },
   {
     "emoji": "🚨",
-    "code": "🚨 lint",
+    "code": "lint",
     "description": "Removing linter warnings.",
     "name": "lint"
   },
   {
     "emoji": "📈",
-    "code": "📈 analytics",
+    "code": "analytics",
     "description": "Adding analytics or tracking code.",
     "name": "analytics"
   },
   {
     "emoji": "🚚",
-    "code": "🚚 mv",
+    "code": "mv",
     "description": "Moving or renaming files.",
     "name": "mv"
   },
   {
     "emoji": "🍱",
-    "code": "🍱 assets",
+    "code": "assets",
     "description": "Adding or updating assets.",
     "name": "assets"
   },
   {
     "emoji": "⬇️",
-    "code": "⬇️ downgrade",
+    "code": "downgrade",
     "description": "Downgrading dependencies.",
     "name": "downgrade"
   },
   {
     "emoji": "⬆️",
-    "code": "⬆ upgrade️",
+    "code": "upgrade️",
     "description": "Upgrading dependencies.",
     "name": "upgrade"
   },
   {
     "emoji": "➖",
-    "code": "➖ dep-rm",
+    "code": "dep-rm",
     "description": "Removing a dependency.",
     "name": "dep-rm"
   },
   {
     "emoji": "➕",
-    "code": "➕ dep-add",
+    "code": "dep-add",
     "description": "Adding a dependency.",
     "name": "dep-add"
   },
   {
     "emoji": "🔧",
-    "code": "🔧 config",
+    "code": "config",
     "description": "Changing configuration files.",
     "name": "config"
   },
   {
     "emoji": "⏪",
-    "code": "⏪ revert",
+    "code": "revert",
     "description": "Reverting changes.",
     "name": "revert"
   },
   {
     "emoji": "🔀",
-    "code": "🔀 merge",
+    "code": "merge",
     "description": "Merging branches.",
     "name": "merge"
   },
   {
     "emoji": "🎉",
-    "code": "🎉 init",
+    "code": "init",
     "description": "Initial commit.",
     "name": "init"
   }

@@ -1,6 +1,6 @@
 {
   "name": "cz-emoji-xg",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Commitizen adapter formatting commit messages using emojis.",
   "author": "xgfe",
   "license": "MIT",
