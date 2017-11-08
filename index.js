@@ -84,7 +84,7 @@ function createQuestions(config) {
     {
       type: 'input',
       name: 'issues',
-      message: 'List any issue closed:'
+      message: 'List any issue closed (#1 #2 #3 ...):'
     },
     {
       type: 'input',
@@ -110,7 +110,17 @@ function format(answers) {
   // wrap body at 100
   const body = wrap(answers.body, 100)
 
-  return (head + '\n\n' + body)
+  let commitmsg = head + '\n\n' + body
+
+  const issues = answers.issues.match(/#\d+/g)
+  if (issues && issues.length > 0) {
+    commitmsg += '\n'
+    issues.forEach((i) => {
+      commitmsg += '\nCloses ' + i
+    })
+  }
+
+  return commitmsg
 }
 
 /**
