@@ -26,7 +26,8 @@ function getEmojiChoices(types) {
  * @private
  */
 function createQuestions(res) {
-  const config = res.pkg.config || {}
+  const pkg = res.pkg || {}
+  const config = pkg.config || {}
   const emojiConfig = config['cz-emoji'] || {}
 
   return [
