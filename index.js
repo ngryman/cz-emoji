@@ -4,6 +4,8 @@ const readPkg = require('read-pkg-up')
 const truncate = require('cli-truncate')
 const wrap = require('wrap-ansi')
 const pad = require('pad')
+const fuse = require('fuse.js')
+const Promise = require('bluebird')
 const types = require('./lib/types')
 
 function getEmojiChoices(types) {
@@ -30,12 +32,28 @@ function createQuestions(res) {
   const config = pkg.config || {}
   const emojiConfig = config['cz-emoji'] || {}
 
+  const choices = getEmojiChoices(emojiConfig.types || types)
+  const fuzzy = new fuse(choices, {
+    keys: ['name'],
+    shouldSort: true,
+    threshold: 0.4,
+    location: 0,
+    distance: 100,
+    maxPatternLength: 32,
+    minMatchCharLength: 0
+  })
+
   return [
     {
-      type: 'list',
+      type: 'autocomplete',
       name: 'type',
       message: "Select the type of change you're committing:",
-      choices: getEmojiChoices(emojiConfig.types || types)
+      source: (ansersSoFar, query) => {
+        if (!query) {
+          return Promise.resolve(choices)
+        }
+        return Promise.resolve(fuzzy.search(query))
+      }
     },
     {
       type: emojiConfig.scopes ? 'list' : 'input',
@@ -87,6 +105,7 @@ function format(answers) {
  */
 module.exports = {
   prompter: function(cz, commit) {
+    cz.prompt.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
     readPkg()
       .then(createQuestions)
       .then(cz.prompt)
