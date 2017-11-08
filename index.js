@@ -8,14 +8,14 @@ const fuse = require('fuse.js')
 const Promise = require('bluebird')
 const types = require('./lib/types')
 
-function getEmojiChoices(types) {
+function getEmojiChoices(types, symbol) {
   const maxNameLength = types.reduce(
     (maxLength, type) => (type.name.length > maxLength ? type.name.length : maxLength
   ), 0)
 
   return types.map(choice => ({
     name: `${pad(choice.name, maxNameLength)}  ${choice.emoji}  ${choice.description}`,
-    value: choice.code
+    value: symbol ? choice.emoji : choice.code
   }))
 }
 
@@ -32,7 +32,7 @@ function createQuestions(res) {
   const config = pkg.config || {}
   const emojiConfig = config['cz-emoji'] || {}
 
-  const choices = getEmojiChoices(emojiConfig.types || types)
+  const choices = getEmojiChoices(emojiConfig.types || types, emojiConfig.symbol || false)
   const fuzzy = new fuse(choices, {
     keys: ['name'],
     shouldSort: true,
