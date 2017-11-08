@@ -21,8 +21,11 @@
   "dependencies": {
     "bluebird": "^3.5.1",
     "cli-truncate": "^1.0.0",
+    "fs-extra": "^4.0.2",
     "fuse.js": "^3.2.0",
+    "home-dir": "^1.0.0",
     "inquirer-autocomplete-prompt": "^0.12.0",
+    "lodash": "^4.17.4",
     "pad": "^2.0.1",
     "read-pkg-up": "^2.0.0",
     "wrap-ansi": "^3.0.0"
