@@ -14,7 +14,7 @@ const defaultConfig = {
   symbol: false
 }
 
-function getEmojiChoices({types, symbol}) {
+function getEmojiChoices({ types, symbol }) {
   const maxNameLength = types.reduce(
     (maxLength, type) => (type.name.length > maxLength ? type.name.length : maxLength
   ), 0)
@@ -27,16 +27,18 @@ function getEmojiChoices({types, symbol}) {
 }
 
 function loadConfig() {
+  const getConfig = (obj) => obj && obj.config && obj.config['cz-emoji']
+
   return readPkg()
     .then(({ pkg }) => {
-      const config = (pkg && pkg.config && pkg.config['cz-emoji'])
+      const config = getConfig(pkg)
       if (config) return config
 
       return new Promise((resolve, reject) => {
         fs.readFile(homeDir('.czrc'), 'utf8', (err, content) => {
           if (err) reject(err)
           const czrc = JSON.parse(content) || null
-          resolve((czrc && czrc.config && czrc.config['cz-emoji']) || {})
+          resolve(getConfig(czrc))
         })
       })
     })
