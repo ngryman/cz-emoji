@@ -1,17 +1,20 @@
 'use strict'
 
-const _ = require('lodash')
-const fs = require('fs-extra')
+const fs = require('fs')
 const readPkg = require('read-pkg-up')
 const truncate = require('cli-truncate')
 const wrap = require('wrap-ansi')
 const pad = require('pad')
 const fuse = require('fuse.js')
-const Promise = require('bluebird')
 const homeDir = require('home-dir')
 const types = require('./lib/types')
 
-function getEmojiChoices(types, symbol) {
+const defaultConfig = {
+  types,
+  symbol: false
+}
+
+function getEmojiChoices({types, symbol}) {
   const maxNameLength = types.reduce(
     (maxLength, type) => (type.name.length > maxLength ? type.name.length : maxLength
   ), 0)
@@ -22,20 +25,22 @@ function getEmojiChoices(types, symbol) {
   }))
 }
 
-function loadConfig(res) {
-  let config = _.get(res, 'pkg.config.cz-emoji')
-  if (!config) {
-    try {
-      const czrc = fs.readJsonSync(homeDir('.czrc'))
-      config = czrc.config['cz-emoji']
-    } catch (e) {
-      config = {}
-    }
+function loadConfig() {
+  return readPkg()
+    .then(({ pkg }) => {
+      const config = (pkg && pkg.config && pkg.config['cz-emoji'])
+      if (config) return config
 
-    config.types = config.types || types
-    config.symbol = config.symbol || false
-    return config
-  }
+      return new Promise((resolve, reject) => {
+        fs.readFile(homeDir('.czrc'), 'utf8', (err, content) => {
+          if (err) reject(err)
+          resolve(JSON.parse(content))
+        })
+      })
+    })
+    .then(config => (
+      Object.assign({}, defaultConfig, config)
+    ))
 }
 
 /**
@@ -47,7 +52,7 @@ function loadConfig(res) {
  * @private
  */
 function createQuestions(config) {
-  const choices = getEmojiChoices(config.types, config.symbol)
+  const choices = getEmojiChoices(config)
   const fuzzy = new fuse(choices, {
     keys: ['name'],
     shouldSort: true,
@@ -64,10 +69,7 @@ function createQuestions(config) {
       name: 'type',
       message: "Select the type of change you're committing:",
       source: (ansersSoFar, query) => {
-        if (!query) {
-          return Promise.resolve(choices)
-        }
-        return Promise.resolve(fuzzy.search(query))
+        return Promise.resolve(query ? fuzzy.search(query) : choices)
       }
     },
     {
@@ -84,7 +86,7 @@ function createQuestions(config) {
     {
       type: 'input',
       name: 'issues',
-      message: 'List any issue closed (#1 #2 #3 ...):'
+      message: 'List any issue closed (#1, ...):'
     },
     {
       type: 'input',
@@ -131,8 +133,7 @@ function format(answers) {
 module.exports = {
   prompter: function(cz, commit) {
     cz.prompt.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
-    readPkg()
-      .then(loadConfig)
+    loadConfig()
       .then(createQuestions)
       .then(cz.prompt)
       .then(format)
