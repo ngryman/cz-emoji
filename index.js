@@ -21,7 +21,8 @@ function getEmojiChoices({types, symbol}) {
 
   return types.map(choice => ({
     name: `${pad(choice.name, maxNameLength)}  ${choice.emoji}  ${choice.description}`,
-    value: symbol ? choice.emoji : choice.code
+    value: symbol ? choice.emoji : choice.code,
+    code: choice.code
   }))
 }
 
@@ -34,13 +35,15 @@ function loadConfig() {
       return new Promise((resolve, reject) => {
         fs.readFile(homeDir('.czrc'), 'utf8', (err, content) => {
           if (err) reject(err)
-          resolve(JSON.parse(content))
+          const czrc = JSON.parse(content) || null
+          resolve((czrc && czrc.config && czrc.config['cz-emoji']) || {})
         })
       })
     })
     .then(config => (
       Object.assign({}, defaultConfig, config)
     ))
+    .catch(() => (defaultConfig))
 }
 
 /**
@@ -54,21 +57,21 @@ function loadConfig() {
 function createQuestions(config) {
   const choices = getEmojiChoices(config)
   const fuzzy = new fuse(choices, {
-    keys: ['name'],
     shouldSort: true,
     threshold: 0.4,
     location: 0,
     distance: 100,
     maxPatternLength: 32,
-    minMatchCharLength: 0
-  })
+    minMatchCharLength: 1,
+    keys: ["name", "code"]
+})
 
   return [
     {
       type: 'autocomplete',
       name: 'type',
       message: "Select the type of change you're committing:",
-      source: (ansersSoFar, query) => {
+      source: (answersSoFar, query) => {
         return Promise.resolve(query ? fuzzy.search(query) : choices)
       }
     },
