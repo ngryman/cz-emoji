@@ -117,17 +117,13 @@ function format(answers) {
   // wrap body at 100
   const body = wrap(answers.body, 100)
 
-  let commitmsg = head + '\n\n' + body
+  const footer = (answers.issues.match(/#\d+/g) || [])
+  .map(issue => `Closes ${issue}`)
+  .join('\n')
 
-  const issues = answers.issues.match(/#\d+/g)
-  if (issues && issues.length > 0) {
-    commitmsg += '\n'
-    issues.forEach((i) => {
-      commitmsg += '\nCloses ' + i
-    })
-  }
-
-  return commitmsg
+  return [head, body, footer]
+    .join('\n\n')
+    .trim()
 }
 
 /**
