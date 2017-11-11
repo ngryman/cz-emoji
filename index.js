@@ -118,8 +118,8 @@ function format(answers) {
   const body = wrap(answers.body, 100)
 
   const footer = (answers.issues.match(/#\d+/g) || [])
-  .map(issue => `Closes ${issue}`)
-  .join('\n')
+    .map(issue => `Closes ${issue}`)
+    .join('\n')
 
   return [head, body, footer]
     .join('\n\n')
