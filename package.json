@@ -20,6 +20,9 @@
   ],
   "dependencies": {
     "cli-truncate": "^1.0.0",
+    "fuse.js": "^3.2.0",
+    "home-dir": "^1.0.0",
+    "inquirer-autocomplete-prompt": "^0.12.0",
     "pad": "^2.0.1",
     "read-pkg-up": "^2.0.0",
     "wrap-ansi": "^3.0.0"
