@@ -47,10 +47,15 @@ function loadConfig() {
       return new Promise((resolve, reject) => {
         fs.readFile(homeDir('.czrc'), 'utf8', (err, content) => {
           if (err) reject(err)
-          const czrc = JSON.parse(content) || null
-          resolve(getConfig(czrc))
+          try {
+            const czrc = JSON.parse(content) || null
+            resolve(getConfig(czrc))
+          } catch (e) {
+            reject(e)
+          }
         })
       })
+      .catch(() => ({}))
     })
     .then(config => {
       let c = Object.assign({}, defaultConfig, config)
@@ -61,7 +66,6 @@ function loadConfig() {
       }
       return c
     })
-    .catch(() => (defaultConfig))
 }
 
 /**
@@ -155,5 +159,6 @@ module.exports = {
       .then(cz.prompt)
       .then(format)
       .then(commit)
+      .catch(e => console.error(e))
   }
 }
