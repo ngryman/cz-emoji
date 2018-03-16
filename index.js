@@ -11,6 +11,7 @@ const types = require('./lib/types')
 
 const defaultConfig = {
   types,
+  mode: 'merge',
   symbol: false
 }
 
@@ -51,9 +52,15 @@ function loadConfig() {
         })
       })
     })
-    .then(config => (
-      Object.assign({}, defaultConfig, config)
-    ))
+    .then(config => {
+      let c = Object.assign({}, defaultConfig, config)
+      switch (config.mode || defaultConfig.mode) {
+        case 'replace':
+          c.types = config.types || c.types
+          break
+      }
+      return c
+    })
     .catch(() => (defaultConfig))
 }
 
