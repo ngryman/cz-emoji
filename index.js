@@ -27,7 +27,16 @@ function getEmojiChoices({ types, symbol }) {
 }
 
 function loadConfig() {
-  const getConfig = (obj) => obj && obj.config && obj.config['cz-emoji']
+  const getConfig = (obj) => {
+    if (obj && obj.config) {
+      let conf = obj.config['cz-emoji']
+      if (conf && typeof conf.types === 'string') {
+        conf.types = require(conf.types)
+      }
+      return conf
+    }
+    return null
+  }
 
   return readPkg()
     .then(({ pkg }) => {
