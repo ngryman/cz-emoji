@@ -17,7 +17,7 @@
 ## Install
 
 ```bash
-npm install --global cz-emoji
+npm i -g cz-emoji
 
 # set as default adapter for your projects
 echo '{ "path": "cz-emoji" }' > ~/.czrc
@@ -46,14 +46,14 @@ But you can customize things on a project basis by adding a configuration sectio
 ### Types
 
 An [Inquirer.js] choices array:
-```json
+```json5
 {
   "config": {
     "cz-emoji": {
       "types": [
         {
           "emoji": "🌟",
-          "code": ":star2:",
+          "code": ":star2:", // code must be the emoji itself
           "description": "A new feature",
           "name": "feature"
         }
@@ -63,7 +63,21 @@ An [Inquirer.js] choices array:
 }
 ```
 
-The value `property` must be the emoji itself.
+Load types by module name or path (like `config.commitizen.path`)
+
+```bash
+npm i -g cz-emoji-types-angular
+```
+```json5
+{
+  "config": {
+    "cz-emoji": {
+      "types": "cz-emoji-types-angular",
+      "mode": "replace" // default mode is `merge`
+    }
+  }
+}
+```
 
 ### Scopes
 

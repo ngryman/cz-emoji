@@ -11,6 +11,7 @@ const types = require('./lib/types')
 
 const defaultConfig = {
   types,
+  mode: 'merge',
   symbol: false
 }
 
@@ -27,7 +28,16 @@ function getEmojiChoices({ types, symbol }) {
 }
 
 function loadConfig() {
-  const getConfig = (obj) => obj && obj.config && obj.config['cz-emoji']
+  const getConfig = (obj) => {
+    if (obj && obj.config) {
+      let conf = obj.config['cz-emoji']
+      if (conf && typeof conf.types === 'string') {
+        conf.types = require(conf.types)
+      }
+      return conf
+    }
+    return null
+  }
 
   return readPkg()
     .then(({ pkg }) => {
@@ -37,15 +47,25 @@ function loadConfig() {
       return new Promise((resolve, reject) => {
         fs.readFile(homeDir('.czrc'), 'utf8', (err, content) => {
           if (err) reject(err)
-          const czrc = JSON.parse(content) || null
-          resolve(getConfig(czrc))
+          try {
+            const czrc = JSON.parse(content) || null
+            resolve(getConfig(czrc))
+          } catch (e) {
+            reject(e)
+          }
         })
       })
+      .catch(() => ({}))
     })
-    .then(config => (
-      Object.assign({}, defaultConfig, config)
-    ))
-    .catch(() => (defaultConfig))
+    .then(config => {
+      let c = Object.assign({}, defaultConfig, config)
+      switch (c.mode) {
+        case 'replace':
+          c.types = config.types || c.types
+          break
+      }
+      return c
+    })
 }
 
 /**
@@ -139,5 +159,6 @@ module.exports = {
       .then(cz.prompt)
       .then(format)
       .then(commit)
+      .catch(e => console.error(e))
   }
 }
