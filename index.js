@@ -59,7 +59,7 @@ function loadConfig() {
     })
     .then(config => {
       let c = Object.assign({}, defaultConfig, config)
-      switch (config.mode || defaultConfig.mode) {
+      switch (c.mode) {
         case 'replace':
           c.types = config.types || c.types
           break
