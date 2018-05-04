@@ -37,7 +37,7 @@ function loadConfig() {
       return new Promise((resolve, reject) => {
         fs.readFile(homeDir('.czrc'), 'utf8', (err, content) => {
           if (err) reject(err)
-          const czrc = JSON.parse(content) || null
+          const czrc = content && JSON.parse(content) || null
           resolve(getConfig(czrc))
         })
       })
