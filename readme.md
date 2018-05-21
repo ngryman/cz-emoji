@@ -31,7 +31,7 @@ $ git cz
 
 ## Customize
 
-By default `cz-emoji` comes preconfigured with the [Gitemoji](https://gitmoji.carloscuesta.me/) types.
+By default `cz-emoji` comes preconfigured with the [Gitmoji](https://gitmoji.carloscuesta.me/) types.
 
 But you can customize things on a project basis by adding a configuration section in your `package.json`:
 
