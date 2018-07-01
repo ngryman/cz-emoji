@@ -138,6 +138,13 @@
     "name": "upgrade"
   },
   {
+    "emoji": "📌",
+    "entity": "&#x1F4CC;",
+    "code": ":pushpin:",
+    "description": "Pinning dependencies to specific versions.",
+    "name": "pushpin"
+  },
+  {
     "emoji": "👷",
     "code": ":construction_worker:",
     "description": "Adding CI build system.",
@@ -150,8 +157,8 @@
     "name": "analytics"
   },
   {
-    "emoji": "🔨",
-    "code": ":hammer:",
+    "emoji": "♻️",
+    "code": ":recycle:",
     "description": "Refactoring code.",
     "name": "refactoring"
   },
@@ -304,5 +311,47 @@
     "code": ":children_crossing:",
     "description": "Improving user experience / usability.",
     "name": "ux"
+  },
+  {
+    "emoji": "🏗",
+    "entity": "&#1f3d7;",
+    "code": ":building_construction:",
+    "description": "Making architectural changes.",
+    "name": "building-construction"
+  },
+  {
+    "emoji": "📱",
+    "entity": "&#128241;",
+    "code": ":iphone:",
+    "description": "Working on responsive design.",
+    "name": "iphone"
+  },
+  {
+    "emoji": "🤡",
+    "entity": "&#129313;",
+    "code": ":clown_face:",
+    "description": "Mocking things.",
+    "name": "clown-face"
+  },
+  {
+    "emoji": "🥚",
+    "entity": "&#129370;",
+    "code": ":egg:",
+    "description": "Adding an easter egg.",
+    "name": "egg"
+  },
+  {
+    "emoji": "🙈",
+    "entity": "&#8bdfe7;",
+    "code": ":see_no_evil:",
+    "description": "Adding or updating a .gitignore file",
+    "name": "see-no-evil"
+  },
+  {
+    "emoji": "📸",
+    "entity": "&#128248;",
+    "code": ":camera_flash:",
+    "description": "Adding or updating snapshots",
+    "name": "camera-flash"
   }
 ]
