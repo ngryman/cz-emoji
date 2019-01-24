@@ -51,10 +51,15 @@ function createQuestions(res) {
       name: 'subject',
       message: 'Write a short description:'
     },
+    // {
+    //   type: 'input',
+    //   name: 'issues',
+    //   message: 'List any issue closed:'
+    // },
     {
       type: 'input',
-      name: 'issues',
-      message: 'List any issue closed:'
+      name: 'breaking',
+      message: 'List any breaking changes:'
     },
     {
       type: 'input',
@@ -73,7 +78,7 @@ function createQuestions(res) {
 function format(answers) {
 
   // parentheses are only needed when a scope is present
-  const scope = answers.scope ? '(' + answers.scope.trim() + ') ' : ''
+  const scope = answers.scope ? '(' + answers.scope.trim() + '): ' : ''
 
   // concat appends
   let appends = '';
@@ -95,6 +100,11 @@ function format(answers) {
   const issues = wrap(answers.issues, 100);
   if (issues) {
     commit += '\n\n' + issues
+  }
+
+  const breaking = wrap(answers.breaking, 100);
+  if (breaking) {
+    commit += '\n\nBREAKING CHANGE: ' + breaking
   }
 
   return (commit)
