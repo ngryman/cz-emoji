@@ -97,10 +97,10 @@ function format(answers) {
     commit += '\n\n' + body
   }
 
-  const issues = wrap(answers.issues, 100);
-  if (issues) {
-    commit += '\n\n' + issues
-  }
+  // const issues = wrap(answers.issues, 100);
+  // if (issues) {
+  //   commit += '\n\n' + issues
+  // }
 
   const breaking = wrap(answers.breaking, 100);
   if (breaking) {
