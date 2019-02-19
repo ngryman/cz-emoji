@@ -16,11 +16,26 @@
 
 ## Install
 
+__Globally__
+
 ```bash
 npm install --global cz-emoji
 
 # set as default adapter for your projects
 echo '{ "path": "cz-emoji" }' > ~/.czrc
+```
+
+__Locally__
+
+```bash
+npm install --save-dev cz-emoji
+
+# set as default adapter for your projects
+"config": {
+    "commitizen": {
+      "path": "./node_modules/cz-emoji"
+    },
+  },
 ```
 
 ## Usage
