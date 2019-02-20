@@ -86,6 +86,35 @@ An [Inquirer.js] choices array:
 
  - https://github.com/Falieson/TRAM
 
+## Commitlint
+
+Commitlint can be set to work with this package by leveraging the package https://github.com/arvinxx/commitlint-config-gitmoji.
+
+```bash
+npm install --save-dev commitlint-config-gitmoji
+```
+
+_commitlint.config.js_
+```js
+module.exports = {
+  extends: [
+    'gitmoji'
+  ],
+  parserPreset: {
+    parserOpts: {
+      headerPattern: /^(:\w*:)(?:\s)(?:\((.*?)\))?\s((?:.*(?=\())|.*)(?:\(#(\d*)\))?/,
+      headerCorrespondence: [
+        'type',
+        'scope',
+        'subject',
+        'ticket'
+      ],
+    }
+  }
+};
+```
+
+
 ## License
 
 MIT © [Nicolas Gryman](http://ngryman.sh)
