@@ -2,7 +2,6 @@
 
 > Commitizen adapter formatting commit messages using emojis.
 
-
 **cz-emoji** allows you to easily use emojis in your commits using [commitizen].
 
 ```sh
@@ -61,6 +60,7 @@ But you can customize things on a project basis by adding a configuration sectio
 ### Types
 
 An [Inquirer.js] choices array:
+
 ```json
 {
   "config": {
@@ -83,15 +83,26 @@ The value `property` must be the emoji itself.
 ### Scopes
 
 An [Inquirer.js] choices array:
+
 ```json
 {
   "config": {
     "cz-emoji": {
-      "scopes": [
-        "home",
-        "accounts",
-        "ci"
-      ]
+      "scopes": ["home", "accounts", "ci"]
+    }
+  }
+}
+```
+
+### Symbol
+
+A boolean value that allows for an using a unicode value rather than the default of gitmoji markup in a commit message. The default for symbol is false.
+
+```json
+{
+  "config": {
+    "cz-emoji": {
+      "symbol": true
     }
   }
 }
@@ -99,7 +110,7 @@ An [Inquirer.js] choices array:
 
 ## Examples
 
- - https://github.com/Falieson/TRAM
+- https://github.com/Falieson/TRAM
 
 ## Commitlint
 
@@ -110,30 +121,22 @@ npm install --save-dev commitlint-config-gitmoji
 ```
 
 _commitlint.config.js_
+
 ```js
 module.exports = {
-  extends: [
-    'gitmoji'
-  ],
+  extends: ["gitmoji"],
   parserPreset: {
     parserOpts: {
       headerPattern: /^(:\w*:)(?:\s)(?:\((.*?)\))?\s((?:.*(?=\())|.*)(?:\(#(\d*)\))?/,
-      headerCorrespondence: [
-        'type',
-        'scope',
-        'subject',
-        'ticket'
-      ],
+      headerCorrespondence: ["type", "scope", "subject", "ticket"]
     }
   }
 };
 ```
 
-
 ## License
 
 MIT © [Nicolas Gryman](http://ngryman.sh)
 
-
 [commitizen]: https://github.com/commitizen/cz-cli
-[Inquirer.js]: https://github.com/SBoudrias/Inquirer.js/
+[inquirer.js]: https://github.com/SBoudrias/Inquirer.js/
