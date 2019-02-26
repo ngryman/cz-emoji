@@ -28,11 +28,13 @@ echo '{ "path": "cz-emoji" }' > ~/.czrc
 $ git cz
 ```
 
-## Customize
+## Customization
 
-By default `cz-emoji` comes preconfigured with the [Gitmoji](https://gitmoji.carloscuesta.me/) types.
+By default `cz-emoji` comes ready to run out of the box. Uses may vary, so there are a few configuration options to allow fine tuning for project needs.
 
-But you can customize things on a project basis by adding a configuration section in your `package.json`:
+### How to
+
+Configuring `cz-emoji` can be handled in the users home directory (`~/.czrc`) for changes to impact all projects or on a per project basis (`package.json`). Simply add the config property as shown below to the existing object in either of the locations with your settings for override.
 
 ```json
 {
@@ -42,7 +44,11 @@ But you can customize things on a project basis by adding a configuration sectio
 }
 ```
 
-### Types
+### Configuration Options
+
+#### Types
+
+By default `cz-emoji` comes preconfigured with the [Gitmoji](https://gitmoji.carloscuesta.me/) types.
 
 An [Inquirer.js] choices array:
 
@@ -63,9 +69,7 @@ An [Inquirer.js] choices array:
 }
 ```
 
-The value `property` must be the emoji itself.
-
-### Scopes
+#### Scopes
 
 An [Inquirer.js] choices array:
 
@@ -79,9 +83,9 @@ An [Inquirer.js] choices array:
 }
 ```
 
-### Symbol
+#### Symbol
 
-A boolean value that allows for an using a unicode value rather than the default of gitmoji markup in a commit message. The default for symbol is false.
+A boolean value that allows for an using a unicode value rather than the default of [Gitmoji](https://gitmoji.carloscuesta.me/) markup in a commit message. The default for symbol is false.
 
 ```json
 {
