@@ -1,9 +1,9 @@
 [
   {
     "emoji": "✨",
-    "code": "feature",
+    "code": "feat",
     "description": "Introducing new features.",
-    "name": "feature"
+    "name": "feat"
   },
   {
     "emoji": "🐛",

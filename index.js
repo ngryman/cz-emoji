@@ -47,6 +47,11 @@ function createQuestions(res) {
       choices: emojiConfig.scopes && [{ name: '[none]', value: '' }].concat(emojiConfig.scopes)
     },
     {
+      type: 'ones',
+      name: 'onesId',
+      message: 'your commit onesId:'
+    },
+    {
       type: 'input',
       name: 'subject',
       message: 'Write a short description:'
@@ -78,6 +83,7 @@ function createQuestions(res) {
 function format(answers) {
 
   // parentheses are only needed when a scope is present
+  const onesId = answers.onesId ? '#' + answers.onesId.trim() : ''
   const scope = answers.scope ? '(' + answers.scope.trim() + '): ' : ''
 
   // concat appends
@@ -89,7 +95,7 @@ function format(answers) {
   }
 
   // build head line and limit it to 100
-  let commit = truncate(answers.type + appends + scope + answers.subject.trim(), 100)
+  let commit = truncate(answers.type + onesId + appends + scope + answers.subject.trim(), 100)
 
   // wrap body at 100
   const body = wrap(answers.body, 100);
