@@ -16,8 +16,9 @@ const defaultConfig = {
 
 function getEmojiChoices({ types, symbol }) {
   const maxNameLength = types.reduce(
-    (maxLength, type) => (type.name.length > maxLength ? type.name.length : maxLength
-  ), 0)
+    (maxLength, type) => (type.name.length > maxLength ? type.name.length : maxLength),
+    0
+  )
 
   return types.map(choice => ({
     name: `${pad(choice.name, maxNameLength)}  ${choice.emoji}  ${choice.description}`,
@@ -27,7 +28,7 @@ function getEmojiChoices({ types, symbol }) {
 }
 
 function loadConfig() {
-  const getConfig = (obj) => obj && obj.config && obj.config['cz-emoji']
+  const getConfig = obj => obj && obj.config && obj.config['cz-emoji']
 
   return readPkg()
     .then(({ pkg }) => {
@@ -37,15 +38,13 @@ function loadConfig() {
       return new Promise((resolve, reject) => {
         fs.readFile(homeDir('.czrc'), 'utf8', (err, content) => {
           if (err) reject(err)
-          const czrc = content && JSON.parse(content) || null
+          const czrc = (content && JSON.parse(content)) || null
           resolve(getConfig(czrc))
         })
       })
     })
-    .then(config => (
-      Object.assign({}, defaultConfig, config)
-    ))
-    .catch(() => (defaultConfig))
+    .then(config => Object.assign({}, defaultConfig, config))
+    .catch(() => defaultConfig)
 }
 
 /**
@@ -65,8 +64,8 @@ function createQuestions(config) {
     distance: 100,
     maxPatternLength: 32,
     minMatchCharLength: 1,
-    keys: ["name", "code"]
-})
+    keys: ['name', 'code']
+  })
 
   return [
     {
@@ -117,13 +116,9 @@ function format(answers) {
   // wrap body at 100
   const body = wrap(answers.body, 100)
 
-  const footer = (answers.issues.match(/#\d+/g) || [])
-    .map(issue => `Closes ${issue}`)
-    .join('\n')
+  const footer = (answers.issues.match(/#\d+/g) || []).map(issue => `Closes ${issue}`).join('\n')
 
-  return [head, body, footer]
-    .join('\n\n')
-    .trim()
+  return [head, body, footer].join('\n\n').trim()
 }
 
 /**
