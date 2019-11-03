@@ -92,15 +92,15 @@ function createQuestions(config) {
     },
     {
       type: 'input',
-      name: 'issues',
-      message: 'List any issue closed (#1, ...):',
-      when: !config.skipQuestions.includes('issues')
-    },
-    {
-      type: 'input',
       name: 'body',
       message: 'Provide a longer description:',
       when: !config.skipQuestions.includes('body')
+    },
+    {
+      type: 'input',
+      name: 'issues',
+      message: 'List any issue closed (#1, ...):',
+      when: !config.skipQuestions.includes('issues')
     }
   ]
 
