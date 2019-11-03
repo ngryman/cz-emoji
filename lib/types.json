@@ -37,7 +37,7 @@
   },
   {
     "emoji": "📝",
-    "code": ":memo:",
+    "code": ":pencil:",
     "description": "Writing docs.",
     "name": "docs"
   },
@@ -128,18 +128,17 @@
   {
     "emoji": "⬇️",
     "code": ":arrow_down:",
-    "description": "Downgrading dependencies.",
+    "description": " Downgrading dependencies.",
     "name": "downgrade"
   },
   {
     "emoji": "⬆️",
     "code": ":arrow_up:",
-    "description": "Upgrading dependencies.",
+    "description": " Upgrading dependencies.",
     "name": "upgrade"
   },
   {
     "emoji": "📌",
-    "entity": "&#x1F4CC;",
     "code": ":pushpin:",
     "description": "Pinning dependencies to specific versions.",
     "name": "pushpin"
@@ -159,14 +158,8 @@
   {
     "emoji": "♻️",
     "code": ":recycle:",
-    "description": "Refactoring code.",
+    "description": " Refactoring code.",
     "name": "refactoring"
-  },
-  {
-    "emoji": "➖",
-    "code": ":heavy_minus_sign:",
-    "description": "Removing a dependency.",
-    "name": "dep-rm"
   },
   {
     "emoji": "🐳",
@@ -179,6 +172,12 @@
     "code": ":heavy_plus_sign:",
     "description": "Adding a dependency.",
     "name": "dep-add"
+  },
+  {
+    "emoji": "➖",
+    "code": ":heavy_minus_sign:",
+    "description": "Removing a dependency.",
+    "name": "dep-rm"
   },
   {
     "emoji": "🔧",
@@ -195,7 +194,7 @@
   {
     "emoji": "✏️",
     "code": ":pencil2:",
-    "description": "Fixing typos.",
+    "description": " Fixing typos.",
     "name": "typo"
   },
   {
@@ -285,7 +284,7 @@
   {
     "emoji": "🗃",
     "code": ":card_file_box:",
-    "description": "Performing database related changes.",
+    "description": " Performing database related changes.",
     "name": "db"
   },
   {
@@ -303,7 +302,7 @@
   {
     "emoji": "👥",
     "code": ":busts_in_silhouette:",
-    "description": "Add contributor(s).",
+    "description": "Adding contributor(s).",
     "name": "contrib-add"
   },
   {
@@ -314,44 +313,80 @@
   },
   {
     "emoji": "🏗",
-    "entity": "&#1f3d7;",
     "code": ":building_construction:",
-    "description": "Making architectural changes.",
-    "name": "building-construction"
+    "description": " Making architectural changes.",
+    "name": "arch"
   },
   {
     "emoji": "📱",
-    "entity": "&#128241;",
     "code": ":iphone:",
     "description": "Working on responsive design.",
     "name": "iphone"
   },
   {
     "emoji": "🤡",
-    "entity": "&#129313;",
     "code": ":clown_face:",
     "description": "Mocking things.",
     "name": "clown-face"
   },
   {
     "emoji": "🥚",
-    "entity": "&#129370;",
     "code": ":egg:",
     "description": "Adding an easter egg.",
     "name": "egg"
   },
   {
     "emoji": "🙈",
-    "entity": "&#8bdfe7;",
     "code": ":see_no_evil:",
     "description": "Adding or updating a .gitignore file",
     "name": "see-no-evil"
   },
   {
     "emoji": "📸",
-    "entity": "&#128248;",
     "code": ":camera_flash:",
     "description": "Adding or updating snapshots",
     "name": "camera-flash"
+  },
+  {
+    "emoji": "⚗",
+    "code": ":alembic:",
+    "description": " Experimenting new things",
+    "name": "experiment"
+  },
+  {
+    "emoji": "🔍",
+    "code": ":mag:",
+    "description": "Improving SEO",
+    "name": "seo"
+  },
+  {
+    "emoji": "☸️",
+    "code": ":wheel_of_dharma:",
+    "description": " Work about Kubernetes",
+    "name": "k8s"
+  },
+  {
+    "emoji": "🏷️",
+    "code": ":label:",
+    "description": " Adding or updating types (Flow, TypeScript)",
+    "name": "types"
+  },
+  {
+    "emoji": "🌱",
+    "code": ":seedling:",
+    "description": "Adding or updating seed files",
+    "name": "seed"
+  },
+  {
+    "emoji": "🚩",
+    "code": ":triangular_flag_on_post:",
+    "description": "Adding, updating, or removing feature flags",
+    "name": "flags"
+  },
+  {
+    "emoji": "💫",
+    "code": ":dizzy:",
+    "description": "Adding or updating animations and transitions",
+    "name": "animation"
   }
 ]
