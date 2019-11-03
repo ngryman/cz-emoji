@@ -3,6 +3,7 @@ const readPkg = require('read-pkg-up')
 const truncate = require('cli-truncate')
 const wrap = require('wrap-ansi')
 const pad = require('pad')
+const path = require('path')
 const fuse = require('fuse.js')
 const homeDir = require('home-dir')
 const util = require('util')
@@ -30,15 +31,21 @@ function getEmojiChoices({ types, symbol }) {
 async function loadConfig() {
   const getConfig = obj => obj && obj.config && obj.config['cz-emoji']
 
-  const readFromPkg = () => readPkg().then(({ pkg }) => getConfig(pkg))
+  const readFromPkg = () => readPkg().then(res => getConfig(res.pkg))
 
-  const readFromCzrc = async () =>
+  const readFromCzrc = dir =>
     util
-      .promisify(fs.readFile)(homeDir('.czrc'), 'utf8')
-      .then(JSON.parse)
+      .promisify(fs.readFile)(dir, 'utf8')
+      .then(JSON.parse, () => null)
       .then(getConfig)
 
-  const config = (await readFromPkg()) || (await readFromCzrc())
+  const readFromLocalCzrc = () =>
+    readPkg().then(res => readFromCzrc(`${path.dirname(res.path)}/.czrc`))
+
+  const readFromGlobalCzrc = () => readFromCzrc(homeDir('.czrc'))
+
+  const config =
+    (await readFromPkg()) || (await readFromLocalCzrc()) || (await readFromGlobalCzrc())
 
   return { ...defaultConfig, ...config }
 }
