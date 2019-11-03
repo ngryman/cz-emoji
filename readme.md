@@ -115,6 +115,22 @@ A boolean value that allows for an using a unicode value rather than the default
 }
 ```
 
+#### Skip Questions
+
+An array of questions you want to skip:
+
+```json
+{
+  "config": {
+    "cz-emoji": {
+      "skipQuestions": ["scope", "issues"]
+    }
+  }
+}
+```
+
+You can skip the following questions: `scope`, `body`, and `issues`. The `type` and `subject` questions are mandatory.
+
 ## Examples
 
 - https://github.com/Falieson/TRAM

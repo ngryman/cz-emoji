@@ -11,7 +11,8 @@ const types = require('./lib/types')
 
 const defaultConfig = {
   types,
-  symbol: false
+  symbol: false,
+  skipQuestions: ['']
 }
 
 function getEmojiChoices({ types, symbol }) {
@@ -57,6 +58,7 @@ function loadConfig() {
  */
 function createQuestions(config) {
   const choices = getEmojiChoices(config)
+
   const fuzzy = new fuse(choices, {
     shouldSort: true,
     threshold: 0.4,
@@ -67,7 +69,7 @@ function createQuestions(config) {
     keys: ['name', 'code']
   })
 
-  return [
+  const questions = [
     {
       type: 'autocomplete',
       name: 'type',
@@ -80,7 +82,8 @@ function createQuestions(config) {
       type: config.scopes ? 'list' : 'input',
       name: 'scope',
       message: 'Specify a scope:',
-      choices: config.scopes && [{ name: '[none]', value: '' }].concat(config.scopes)
+      choices: config.scopes && [{ name: '[none]', value: '' }].concat(config.scopes),
+      when: !config.skipQuestions.includes('scope')
     },
     {
       type: 'input',
@@ -90,14 +93,18 @@ function createQuestions(config) {
     {
       type: 'input',
       name: 'issues',
-      message: 'List any issue closed (#1, ...):'
+      message: 'List any issue closed (#1, ...):',
+      when: !config.skipQuestions.includes('issues')
     },
     {
       type: 'input',
       name: 'body',
-      message: 'Provide a longer description:'
+      message: 'Provide a longer description:',
+      when: !config.skipQuestions.includes('body')
     }
   ]
+
+  return questions
 }
 
 /**
@@ -107,18 +114,19 @@ function createQuestions(config) {
  * @return {String} Formated git commit message
  */
 function format(answers) {
-  // parentheses are only needed when a scope is present
   const scope = answers.scope ? '(' + answers.scope.trim() + ') ' : ''
+  const issues = answers.issues
+    ? (answers.issues.match(/#\d+/g) || []).map(issue => `Closes ${issue}`).join('\n')
+    : ''
 
-  // build head line and limit it to 100
   const head = truncate(answers.type + ' ' + scope + answers.subject.trim(), 100)
+  const body = wrap(answers.body || '', 100)
+  const footer = issues
 
-  // wrap body at 100
-  const body = wrap(answers.body, 100)
-
-  const footer = (answers.issues.match(/#\d+/g) || []).map(issue => `Closes ${issue}`).join('\n')
-
-  return [head, body, footer].join('\n\n').trim()
+  return [head, body, footer]
+    .filter(Boolean)
+    .join('\n\n')
+    .trim()
 }
 
 /**
