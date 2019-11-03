@@ -15,7 +15,7 @@
 
 ## Install
 
-__Globally__
+**Globally**
 
 ```bash
 npm install --global cz-emoji
@@ -24,17 +24,20 @@ npm install --global cz-emoji
 echo '{ "path": "cz-emoji" }' > ~/.czrc
 ```
 
-__Locally__
+**Locally**
 
 ```bash
 npm install --save-dev cz-emoji
+```
 
-# set as default adapter for your projects
+Add this to your `package.json`:
+
+```json
 "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-emoji"
-    },
-  },
+  "commitizen": {
+    "path": "cz-emoji"
+  }
+}
 ```
 
 ## Usage
@@ -128,14 +131,14 @@ _commitlint.config.js_
 
 ```js
 module.exports = {
-  extends: ["gitmoji"],
+  extends: ['gitmoji'],
   parserPreset: {
     parserOpts: {
       headerPattern: /^(:\w*:)(?:\s)(?:\((.*?)\))?\s((?:.*(?=\())|.*)(?:\(#(\d*)\))?/,
-      headerCorrespondence: ["type", "scope", "subject", "ticket"]
+      headerCorrespondence: ['type', 'scope', 'subject', 'ticket']
     }
   }
-};
+}
 ```
 
 ## License
