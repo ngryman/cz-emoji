@@ -99,7 +99,7 @@ function createQuestions(config) {
     {
       type: 'input',
       name: 'issues',
-      message: 'List any issue closed (#1, ...):',
+      message: 'List any issue closed (#1, #2, ...):',
       when: !config.skipQuestions.includes('issues')
     }
   ]
@@ -116,7 +116,7 @@ function createQuestions(config) {
 function format(answers) {
   const scope = answers.scope ? '(' + answers.scope.trim() + ') ' : ''
   const issues = answers.issues
-    ? (answers.issues.match(/#\d+/g) || []).map(issue => `Closes ${issue}`).join('\n')
+    ? 'Closes ' + (answers.issues.match(/#\d+/g) || []).join(', closes ')
     : ''
 
   const head = truncate(answers.type + ' ' + scope + answers.subject.trim(), 100)
