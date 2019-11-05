@@ -75,10 +75,9 @@ function createQuestions(config) {
     {
       type: 'autocomplete',
       name: 'type',
-      message:
-        config.questions && config.questions.type
-          ? config.questions.type
-          : "Select the type of change you're committing:",
+      message: config.questions && config.questions.type
+        ? config.questions.type
+        : "Select the type of change you're committing:",
       source: (answersSoFar, query) => {
         return Promise.resolve(query ? fuzzy.search(query) : choices)
       }
@@ -86,35 +85,31 @@ function createQuestions(config) {
     {
       type: config.scopes ? 'list' : 'input',
       name: 'scope',
-      message:
-        config.questions && config.questions.scope ? config.questions.scope : 'Specify a scope:',
+      message: config.questions && config.questions.scope ? config.questions.scope : 'Specify a scope:',
       choices: config.scopes && [{ name: '[none]', value: '' }].concat(config.scopes),
       when: !config.skipQuestions.includes('scope')
     },
     {
       type: 'input',
       name: 'subject',
-      message:
-        config.questions && config.questions.subject
-          ? config.questions.subject
-          : 'Write a short description:'
+      message: config.questions && config.questions.subject
+        ? config.questions.subject
+        : 'Write a short description:'
     },
     {
       type: 'input',
       name: 'body',
-      message:
-        config.questions && config.questions.body
-          ? config.questions.body
-          : 'Provide a longer description:',
+      message: config.questions && config.questions.body
+        ? config.questions.body
+        : 'Provide a longer description:',
       when: !config.skipQuestions.includes('body')
     },
     {
       type: 'input',
       name: 'issues',
-      message:
-        config.questions && config.questions.issues
-          ? config.questions.issues
-          : 'List any issue closed (#1, #2, ...):',
+      message: config.questions && config.questions.issues
+        ? config.questions.issues
+        : 'List any issue closed (#1, #2, ...):',
       when: !config.skipQuestions.includes('issues')
     }
   ]
@@ -132,10 +127,10 @@ function format(answers) {
   const scope = answers.scope ? '(' + answers.scope.trim() + ') ' : ' '
   const issues = answers.issues
     ? 'Closes ' + (answers.issues.match(/#\d+/g) || []).join(', closes ')
-    : ''
+    : ' '
 
   const head = truncate(answers.type + ' ' + scope + answers.subject.trim(), 100)
-  const body = wrap(answers.body || '', 100)
+  const body = wrap(answers.body || ' ', 100)
   const footer = issues
 
   return [head, body, footer]
@@ -150,7 +145,7 @@ function format(answers) {
  * @type {Object}
  */
 module.exports = {
-  prompter: function(cz, commit) {
+  prompter: function (cz, commit) {
     cz.prompt.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
     loadConfig()
       .then(createQuestions)
