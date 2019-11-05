@@ -131,6 +131,23 @@ An array of questions you want to skip:
 
 You can skip the following questions: `scope`, `body`, and `issues`. The `type` and `subject` questions are mandatory.
 
+
+#### Customize Questions
+
+An object that contains overrides of the original questions:
+
+```json
+{
+  "config": {
+    "cz-emoji": {
+      "questions": {
+        "body": "This will be displayed instead of original text"
+      }
+    }
+  }
+}
+```
+
 ## Examples
 
 - https://github.com/Falieson/TRAM
