@@ -124,13 +124,13 @@ function createQuestions(config) {
  * @return {String} Formated git commit message
  */
 function format(answers) {
-  const scope = answers.scope ? '(' + answers.scope.trim() + ') ' : ' '
+  const scope = answers.scope ? '(' + answers.scope.trim() + ') ' : ''
   const issues = answers.issues
     ? 'Closes ' + (answers.issues.match(/#\d+/g) || []).join(', closes ')
-    : ' '
+    : ''
 
   const head = truncate(answers.type + ' ' + scope + answers.subject.trim(), 100)
-  const body = wrap(answers.body || ' ', 100)
+  const body = wrap(answers.body || '', 100)
   const footer = issues
 
   return [head, body, footer]
