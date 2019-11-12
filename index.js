@@ -7,12 +7,14 @@ const path = require('path')
 const fuse = require('fuse.js')
 const homeDir = require('home-dir')
 const util = require('util')
+
 const types = require('./lib/types')
 
 const defaultConfig = {
   types,
   symbol: false,
-  skipQuestions: ['']
+  skipQuestions: [''],
+  subjectMaxLength: 75
 }
 
 function getEmojiChoices({ types, symbol }) {
@@ -48,6 +50,25 @@ async function loadConfig() {
     (await readFromPkg()) || (await readFromLocalCzrc()) || (await readFromGlobalCzrc())
 
   return { ...defaultConfig, ...config }
+}
+
+function formatScope(scope) {
+  return scope ? `(${scope})` : ''
+}
+
+function formatHead({ type, scope, subject }) {
+  return [type, formatScope(scope), subject]
+    .filter(Boolean)
+    .map(s => s.trim())
+    .join(' ')
+}
+
+function formatIssues(issues) {
+  return issues ? 'Closes ' + (issues.match(/#\d+/g) || []).join(', closes ') : ''
+}
+
+function renderEmoji(type) {
+  return types.find(t => t.emoji === type || t.code === type).emoji
 }
 
 /**
@@ -92,12 +113,13 @@ function createQuestions(config) {
       when: !config.skipQuestions.includes('scope')
     },
     {
-      type: 'input',
+      type: 'maxlength-input',
       name: 'subject',
       message:
         config.questions && config.questions.subject
           ? config.questions.subject
-          : 'Write a short description:'
+          : 'Write a short description:',
+      maxLength: config.subjectMaxLength
     },
     {
       type: 'input',
@@ -129,14 +151,11 @@ function createQuestions(config) {
  * @return {String} Formated git commit message
  */
 function format(answers) {
-  const scope = answers.scope ? '(' + answers.scope.trim() + ') ' : ''
-  const issues = answers.issues
-    ? 'Closes ' + (answers.issues.match(/#\d+/g) || []).join(', closes ')
-    : ''
+  const { columns } = process.stdout
 
-  const head = truncate(answers.type + ' ' + scope + answers.subject.trim(), 100)
-  const body = wrap(answers.body || '', 100)
-  const footer = issues
+  const head = truncate(formatHead(answers), columns)
+  const body = wrap(answers.body || '', columns)
+  const footer = formatIssues(answers.issues)
 
   return [head, body, footer]
     .filter(Boolean)
@@ -152,6 +171,8 @@ function format(answers) {
 module.exports = {
   prompter: function(cz, commit) {
     cz.prompt.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
+    cz.prompt.registerPrompt('maxlength-input', require('inquirer-maxlength-input-prompt'))
+
     loadConfig()
       .then(createQuestions)
       .then(cz.prompt)
