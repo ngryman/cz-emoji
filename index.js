@@ -9,12 +9,6 @@ const homeDir = require('home-dir')
 const util = require('util')
 const types = require('./lib/types')
 
-const defaultConfig = {
-  types,
-  symbol: false,
-  skipQuestions: ['']
-}
-
 function getEmojiChoices({ types, symbol }) {
   const maxNameLength = types.reduce(
     (maxLength, type) => (type.name.length > maxLength ? type.name.length : maxLength),
@@ -28,7 +22,14 @@ function getEmojiChoices({ types, symbol }) {
   }))
 }
 
+let loadedConfig = {}
+
 async function loadConfig() {
+  const defaultConfig = {
+    types,
+    symbol: false,
+    skipQuestions: ['']
+  }
   const getConfig = obj => obj && obj.config && obj.config['cz-emoji']
 
   const readFromPkg = () => readPkg().then(res => getConfig(res.pkg))
@@ -46,8 +47,8 @@ async function loadConfig() {
 
   const config =
     (await readFromPkg()) || (await readFromLocalCzrc()) || (await readFromGlobalCzrc())
-
-  return { ...defaultConfig, ...config }
+  loadedConfig = { ...defaultConfig, ...config }
+  return loadedConfig
 }
 
 /**
@@ -75,9 +76,10 @@ function createQuestions(config) {
     {
       type: 'autocomplete',
       name: 'type',
-      message: config.questions && config.questions.type
-        ? config.questions.type
-        : "Select the type of change you're committing:",
+      message:
+        config.questions && config.questions.type
+          ? config.questions.type
+          : "Select the type of change you're committing:",
       source: (answersSoFar, query) => {
         return Promise.resolve(query ? fuzzy.search(query) : choices)
       }
@@ -85,31 +87,35 @@ function createQuestions(config) {
     {
       type: config.scopes ? 'list' : 'input',
       name: 'scope',
-      message: config.questions && config.questions.scope ? config.questions.scope : 'Specify a scope:',
+      message:
+        config.questions && config.questions.scope ? config.questions.scope : 'Specify a scope:',
       choices: config.scopes && [{ name: '[none]', value: '' }].concat(config.scopes),
       when: !config.skipQuestions.includes('scope')
     },
     {
       type: 'input',
       name: 'subject',
-      message: config.questions && config.questions.subject
-        ? config.questions.subject
-        : 'Write a short description:'
+      message:
+        config.questions && config.questions.subject
+          ? config.questions.subject
+          : 'Write a short description:'
     },
     {
       type: 'input',
       name: 'body',
-      message: config.questions && config.questions.body
-        ? config.questions.body
-        : 'Provide a longer description:',
+      message:
+        config.questions && config.questions.body
+          ? config.questions.body
+          : 'Provide a longer description:',
       when: !config.skipQuestions.includes('body')
     },
     {
       type: 'input',
       name: 'issues',
-      message: config.questions && config.questions.issues
-        ? config.questions.issues
-        : 'List any issue closed (#1, #2, ...):',
+      message:
+        config.questions && config.questions.issues
+          ? config.questions.issues
+          : 'List any issue closed (#1, #2, ...):',
       when: !config.skipQuestions.includes('issues')
     }
   ]
@@ -124,12 +130,21 @@ function createQuestions(config) {
  * @return {String} Formated git commit message
  */
 function format(answers) {
+  const format = loadedConfig.format || '[emoji] [scope] [subject]'
   const scope = answers.scope ? '(' + answers.scope.trim() + ') ' : ''
   const issues = answers.issues
     ? 'Closes ' + (answers.issues.match(/#\d+/g) || []).join(', closes ')
     : ''
 
-  const head = truncate(answers.type + ' ' + scope + answers.subject.trim(), 100)
+  const emoji = answers.type
+  const emojiName = types.find(type => type.code === emoji).name
+  const subject = answers.subject.trim()
+  const commitmessage = format
+    .replace(/\[emoji\]/g, emoji)
+    .replace(/\[scope\]/g, scope)
+    .replace(/\[name\]/g, emojiName)
+    .replace(/\[subject\]/g, subject)
+  const head = truncate(commitmessage, 100)
   const body = wrap(answers.body || '', 100)
   const footer = issues
 
@@ -145,7 +160,7 @@ function format(answers) {
  * @type {Object}
  */
 module.exports = {
-  prompter: function (cz, commit) {
+  prompter: function(cz, commit) {
     cz.prompt.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
     loadConfig()
       .then(createQuestions)
