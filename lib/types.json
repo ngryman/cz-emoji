@@ -27,13 +27,13 @@
     "emoji": "🚑",
     "code": ":ambulance:",
     "description": "Critical hotfix.",
-    "name": "quickfix"
+    "name": "hotfix"
   },
   {
     "emoji": "✨",
     "code": ":sparkles:",
     "description": "Introducing new features.",
-    "name": "feature"
+    "name": "feat"
   },
   {
     "emoji": "📝",
