@@ -129,8 +129,8 @@ function createQuestions(config) {
  * @param {Object} answers Answers provide by `inquier.js`
  * @return {String} Formated git commit message
  */
-function format(answers) {
-  const format = loadedConfig.format || '[emoji] [scope] [subject]'
+function format(answers, config) {
+  const format = config.format || '{type} {scope} {subject}'
   const scope = answers.scope ? '(' + answers.scope.trim() + ') ' : ''
   const issues = answers.issues
     ? 'Closes ' + (answers.issues.match(/#\d+/g) || []).join(', closes ')
@@ -140,10 +140,10 @@ function format(answers) {
   const emojiName = types.find(type => type.code === emoji).name
   const subject = answers.subject.trim()
   const commitmessage = format
-    .replace(/\[emoji\]/g, emoji)
-    .replace(/\[scope\]/g, scope)
-    .replace(/\[name\]/g, emojiName)
-    .replace(/\[subject\]/g, subject)
+    .replace(/\{type\}/g, emoji)
+    .replace(/\{scope\}/g, scope)
+    .replace(/\{name\}/g, emojiName)
+    .replace(/\{subject\}/g, subject)
   const head = truncate(commitmessage, 100)
   const body = wrap(answers.body || '', 100)
   const footer = issues
@@ -165,7 +165,7 @@ module.exports = {
     loadConfig()
       .then(createQuestions)
       .then(cz.prompt)
-      .then(format)
+      .then(answers => format(answers, loadedConfig))
       .then(commit)
   }
 }

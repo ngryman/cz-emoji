@@ -155,7 +155,7 @@ Provide custom format for commit message title
 {
   "config": {
     "cz-emoji": {
-      "format": "[emoji] [scope] [subject]"
+      "format": "{type} ({scope}) {subject}"
     }
   }
 }
