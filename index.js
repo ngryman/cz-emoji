@@ -119,7 +119,8 @@ function createQuestions(config) {
         config.questions && config.questions.subject
           ? config.questions.subject
           : 'Write a short description:',
-      maxLength: config.subjectMaxLength
+      maxLength: config.subjectMaxLength,
+      filter: (subject, answers) => formatHead({ ...answers, subject })
     },
     {
       type: 'input',
