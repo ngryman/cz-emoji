@@ -67,10 +67,6 @@ function formatIssues(issues) {
   return issues ? 'Closes ' + (issues.match(/#\d+/g) || []).join(', closes ') : ''
 }
 
-function renderEmoji(type) {
-  return types.find(t => t.emoji === type || t.code === type).emoji
-}
-
 /**
  * Create inquier.js questions object trying to read `types` and `scopes` from the current project
  * `package.json` falling back to nice default :)
