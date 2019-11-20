@@ -150,7 +150,7 @@ function createQuestions(config) {
 function format(answers) {
   const { columns } = process.stdout
 
-  const head = truncate(formatHead(answers), columns)
+  const head = truncate(answers.subject, columns)
   const body = wrap(answers.body || '', columns)
   const footer = formatIssues(answers.issues)
 
