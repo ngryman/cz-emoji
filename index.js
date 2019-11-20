@@ -9,12 +9,6 @@ const homeDir = require('home-dir')
 const util = require('util')
 const types = require('./lib/types')
 
-const defaultConfig = {
-  types,
-  symbol: false,
-  skipQuestions: ['']
-}
-
 function getEmojiChoices({ types, symbol }) {
   const maxNameLength = types.reduce(
     (maxLength, type) => (type.name.length > maxLength ? type.name.length : maxLength),
@@ -28,7 +22,14 @@ function getEmojiChoices({ types, symbol }) {
   }))
 }
 
+let loadedConfig = {}
+
 async function loadConfig() {
+  const defaultConfig = {
+    types,
+    symbol: false,
+    skipQuestions: ['']
+  }
   const getConfig = obj => obj && obj.config && obj.config['cz-emoji']
 
   const readFromPkg = () => readPkg().then(res => getConfig(res.pkg))
@@ -46,8 +47,8 @@ async function loadConfig() {
 
   const config =
     (await readFromPkg()) || (await readFromLocalCzrc()) || (await readFromGlobalCzrc())
-
-  return { ...defaultConfig, ...config }
+  loadedConfig = { ...defaultConfig, ...config }
+  return loadedConfig
 }
 
 /**
@@ -128,13 +129,22 @@ function createQuestions(config) {
  * @param {Object} answers Answers provide by `inquier.js`
  * @return {String} Formated git commit message
  */
-function format(answers) {
+function format(answers, config) {
+  const format = config.format || '{type} {scope} {subject}'
   const scope = answers.scope ? '(' + answers.scope.trim() + ') ' : ''
   const issues = answers.issues
     ? 'Closes ' + (answers.issues.match(/#\d+/g) || []).join(', closes ')
     : ''
 
-  const head = truncate(answers.type + ' ' + scope + answers.subject.trim(), 100)
+  const emoji = answers.type
+  const emojiName = types.find(type => type.code === emoji).name
+  const subject = answers.subject.trim()
+  const commitmessage = format
+    .replace(/\{type\}/g, emoji)
+    .replace(/\{scope\}/g, scope)
+    .replace(/\{name\}/g, emojiName)
+    .replace(/\{subject\}/g, subject)
+  const head = truncate(commitmessage, 100)
   const body = wrap(answers.body || '', 100)
   const footer = issues
 
@@ -155,7 +165,7 @@ module.exports = {
     loadConfig()
       .then(createQuestions)
       .then(cz.prompt)
-      .then(format)
+      .then(answers => format(answers, loadedConfig))
       .then(commit)
   }
 }
