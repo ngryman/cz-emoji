@@ -28,6 +28,7 @@
     "fuse.js": "^3.4.5",
     "home-dir": "^1.0.0",
     "inquirer-autocomplete-prompt": "^0.12.0",
+    "inquirer-maxlength-input-prompt": "^1.0.0",
     "pad": "^2.3.0",
     "prettier": "^1.18.2",
     "read-pkg-up": "^2.0.0",
