@@ -42,7 +42,7 @@ async function loadConfig() {
       .then(getConfig)
 
   const readFromLocalCzrc = () =>
-    readPkg().then(res => readFromCzrc(`${path.dirname(res.path)}/.czrc`))
+    readPkg().then(res => (res ? readFromCzrc(`${path.dirname(res.path)}/.czrc`) : null))
 
   const readFromGlobalCzrc = () => readFromCzrc(homeDir('.czrc'))
 
