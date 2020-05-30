@@ -31,7 +31,7 @@
     "inquirer-maxlength-input-prompt": "^1.0.0",
     "pad": "^2.3.0",
     "prettier": "^1.18.2",
-    "read-pkg-up": "^2.0.0",
+    "read-pkg-up": "^7.0.1",
     "wrap-ansi": "^3.0.0"
   }
 }
