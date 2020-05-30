@@ -25,7 +25,7 @@ function getEmojiChoices({ types, symbol }) {
 
   return types.map(choice => ({
     name: `${pad(choice.name, maxNameLength)}  ${choice.emoji}  ${choice.description}`,
-    value: symbol ? choice.emoji : choice.code,
+    value: symbol ? `${choice.emoji} ` : choice.code,
     code: choice.code
   }))
 }
