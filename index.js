@@ -33,7 +33,7 @@ function getEmojiChoices({ types, symbol }) {
 async function loadConfig() {
   const getConfig = obj => obj && obj.config && obj.config['cz-emoji']
 
-  const readFromPkg = () => readPkg().then(res => getConfig(res.pkg))
+  const readFromPkg = async () => readPkg().then(res => (res ? getConfig(res.packageJson) : null))
 
   const readFromCzrc = dir =>
     util
