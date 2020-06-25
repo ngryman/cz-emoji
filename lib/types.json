@@ -144,6 +144,24 @@
     "name": "pin-dep"
   },
   {
+    "emoji": "🌳",
+    "code": ":deciduous_tree:",
+    "description": "New branch creation",
+    "name": "new branch"
+  },
+  {
+    "emoji": "⏪",
+    "code": ":rewind:",
+    "description": "Reverting changes.",
+    "name": "revert"
+  },
+  {
+    "emoji": "🔀",
+    "code": ":twisted_rightwards_arrows:",
+    "description": "Merging branches.",
+    "name": "merge"
+  },
+  {
     "emoji": "🙈",
     "code": ":see_no_evil:",
     "description": "Adding or updating a .gitignore file",
@@ -202,18 +220,6 @@
     "code": ":construction_worker:",
     "description": "CI Build tweaking.",
     "name": "ci"
-  },
-  {
-    "emoji": "⏪",
-    "code": ":rewind:",
-    "description": "Reverting changes.",
-    "name": "revert"
-  },
-  {
-    "emoji": "🔀",
-    "code": ":twisted_rightwards_arrows:",
-    "description": "Merging branches.",
-    "name": "merge"
   },
   {
     "emoji": "👌",
