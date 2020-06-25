@@ -31,7 +31,7 @@ function getEmojiChoices({ types, symbol }) {
 }
 
 async function loadConfig() {
-  const getConfig = obj => obj && obj.config && obj.config['cz-emoji']
+  const getConfig = obj => obj && obj.config && obj.config['cz-gamedev']
 
   const readFromPkg = async () => readPkg().then(res => (res ? getConfig(res.packageJson) : null))
 

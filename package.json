@@ -1,10 +1,10 @@
 {
-  "name": "cz-emoji",
-  "version": "1.2.1",
-  "description": "Commitizen adapter formatting commit messages using emojis.",
-  "author": "Nicolas Gryman <ngryman@gmail.com> (http://ngryman.sh/)",
+  "name": "cz-gamedev",
+  "version": "1.0.0",
+  "description": "Commitizen adapter for formatting commit messages using emojis, oriented for game development.",
+  "author": "Ian Geier <ianallengeier@gmail.com> (https://github.com/Novvan)",
   "license": "MIT",
-  "repository": "ngryman/cz-emoji",
+  "repository": "novvan/cz-gamedev",
   "main": "index.js",
   "engines": {
     "node": ">=4"
@@ -16,7 +16,9 @@
   "keywords": [
     "commitizen",
     "adapter",
-    "emoji"
+    "emoji",
+    "gamedev",
+    "formating"
   ],
   "config": {
     "commitizen": {
