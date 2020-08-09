@@ -172,9 +172,12 @@ function format(answers) {
 
   const head = truncate(answers.subject, columns)
   const body = wrap(answers.body || '', columns)
+  const breaking = answers.isBreaking
+    ? wrap(`BREAKING CHANGE: ${answers.breakingBody.trim()}`, columns)
+    : ''
   const footer = formatIssues(answers.issues)
 
-  return [head, body, footer]
+  return [head, body, breaking, footer]
     .filter(Boolean)
     .join('\n\n')
     .trim()
