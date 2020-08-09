@@ -133,6 +133,21 @@ function createQuestions(config) {
       when: !config.skipQuestions.includes('body')
     },
     {
+      type: 'confirm',
+      name: 'isBreaking',
+      message: 'Are there any breaking changes?',
+      default: false
+    },
+    {
+      type: 'input',
+      name: 'breakingBody',
+      message:
+        'A BREAKING CHANGE commit requires a body. Please enter a longer description of the commit itself:\n',
+      when: answers => answers.isBreaking && !answers.body,
+      validate: breakingBody =>
+        breakingBody.trim().length > 0 || 'Please enter breaking changes details'
+    },
+    {
       type: 'input',
       name: 'issues',
       message:
