@@ -14,7 +14,8 @@ const defaultConfig = {
   types,
   symbol: false,
   skipQuestions: [''],
-  subjectMaxLength: 75
+  subjectMaxLength: 75,
+  conventional: false
 }
 
 function getEmojiChoices({ types, symbol }) {
@@ -25,7 +26,10 @@ function getEmojiChoices({ types, symbol }) {
 
   return types.map(choice => ({
     name: `${pad(choice.name, maxNameLength)}  ${choice.emoji}  ${choice.description}`,
-    value: symbol ? `${choice.emoji} ` : choice.code,
+    value: {
+      emoji: symbol ? `${choice.emoji} ` : choice.code,
+      name: choice.name
+    },
     code: choice.code
   }))
 }
@@ -58,11 +62,12 @@ function formatScope(scope) {
   return scope ? `(${scope})` : ''
 }
 
-function formatHead({ type, scope, subject }) {
-  return [type, formatScope(scope), subject]
-    .filter(Boolean)
-    .map(s => s.trim())
-    .join(' ')
+function formatHead({ type, scope, subject }, config) {
+  const prelude = config.conventional
+    ? `${type.name}${formatScope(scope)}: ${type.emoji}`
+    : `${type.emoji} ${formatScope(scope)}`
+
+  return `${prelude} ${subject}`
 }
 
 function formatIssues(issues) {
@@ -98,9 +103,7 @@ function createQuestions(config) {
         config.questions && config.questions.type
           ? config.questions.type
           : "Select the type of change you're committing:",
-      source: (answersSoFar, query) => {
-        return Promise.resolve(query ? fuzzy.search(query) : choices)
-      }
+      source: (_, query) => Promise.resolve(query ? fuzzy.search(query) : choices)
     },
     {
       type: config.scopes ? 'list' : 'input',
@@ -118,7 +121,7 @@ function createQuestions(config) {
           ? config.questions.subject
           : 'Write a short description:',
       maxLength: config.subjectMaxLength,
-      filter: (subject, answers) => formatHead({ ...answers, subject })
+      filter: (subject, answers) => formatHead({ ...answers, subject }, config)
     },
     {
       type: 'input',
