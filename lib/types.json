@@ -338,55 +338,55 @@
   {
     "emoji": "🙈",
     "code": ":see_no_evil:",
-    "description": "Adding or updating a .gitignore file",
+    "description": "Adding or updating a .gitignore file.",
     "name": "see-no-evil"
   },
   {
     "emoji": "📸",
     "code": ":camera_flash:",
-    "description": "Adding or updating snapshots",
+    "description": "Adding or updating snapshots.",
     "name": "camera-flash"
   },
   {
     "emoji": "⚗",
     "code": ":alembic:",
-    "description": " Experimenting new things",
+    "description": " Experimenting new things.",
     "name": "experiment"
   },
   {
     "emoji": "🔍",
     "code": ":mag:",
-    "description": "Improving SEO",
+    "description": "Improving SEO.",
     "name": "seo"
   },
   {
     "emoji": "☸️",
     "code": ":wheel_of_dharma:",
-    "description": " Work about Kubernetes",
+    "description": " Work about Kubernetes.",
     "name": "k8s"
   },
   {
     "emoji": "🏷️",
     "code": ":label:",
-    "description": " Adding or updating types (Flow, TypeScript)",
+    "description": " Adding or updating types (Flow, TypeScript).",
     "name": "types"
   },
   {
     "emoji": "🌱",
     "code": ":seedling:",
-    "description": "Adding or updating seed files",
+    "description": "Adding or updating seed files.",
     "name": "seed"
   },
   {
     "emoji": "🚩",
     "code": ":triangular_flag_on_post:",
-    "description": "Adding, updating, or removing feature flags",
+    "description": "Adding, updating, or removing feature flags.",
     "name": "flags"
   },
   {
     "emoji": "💫",
     "code": ":dizzy:",
-    "description": "Adding or updating animations and transitions",
+    "description": "Adding or updating animations and transitions.",
     "name": "animation"
   }
 ]
