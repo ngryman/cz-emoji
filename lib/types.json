@@ -128,13 +128,13 @@
   {
     "emoji": "⬇️",
     "code": ":arrow_down:",
-    "description": " Downgrading dependencies.",
+    "description": "Downgrading dependencies.",
     "name": "downgrade"
   },
   {
     "emoji": "⬆️",
     "code": ":arrow_up:",
-    "description": " Upgrading dependencies.",
+    "description": "Upgrading dependencies.",
     "name": "upgrade"
   },
   {
@@ -158,7 +158,7 @@
   {
     "emoji": "♻️",
     "code": ":recycle:",
-    "description": " Refactoring code.",
+    "description": "Refactoring code.",
     "name": "refactoring"
   },
   {
@@ -194,7 +194,7 @@
   {
     "emoji": "✏️",
     "code": ":pencil2:",
-    "description": " Fixing typos.",
+    "description": "Fixing typos.",
     "name": "typo"
   },
   {
@@ -284,7 +284,7 @@
   {
     "emoji": "🗃",
     "code": ":card_file_box:",
-    "description": " Performing database related changes.",
+    "description": "Performing database related changes.",
     "name": "db"
   },
   {
@@ -314,7 +314,7 @@
   {
     "emoji": "🏗",
     "code": ":building_construction:",
-    "description": " Making architectural changes.",
+    "description": "Making architectural changes.",
     "name": "arch"
   },
   {
@@ -350,7 +350,7 @@
   {
     "emoji": "⚗",
     "code": ":alembic:",
-    "description": " Experimenting new things.",
+    "description": "Experimenting new things.",
     "name": "experiment"
   },
   {
@@ -362,13 +362,13 @@
   {
     "emoji": "☸️",
     "code": ":wheel_of_dharma:",
-    "description": " Work about Kubernetes.",
+    "description": "Work about Kubernetes.",
     "name": "k8s"
   },
   {
     "emoji": "🏷️",
     "code": ":label:",
-    "description": " Adding or updating types (Flow, TypeScript).",
+    "description": "Adding or updating types (Flow, TypeScript).",
     "name": "types"
   },
   {
