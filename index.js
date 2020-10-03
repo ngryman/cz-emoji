@@ -137,9 +137,7 @@ function createQuestions(config) {
       name: 'breakingBody',
       message:
         'A BREAKING CHANGE commit requires a body. Please enter a longer description of the commit itself:\n',
-      when: answers => answers.isBreaking,
-      validate: breakingBody =>
-        breakingBody.trim().length > 0 || 'Please enter breaking changes details'
+      when: !config.skipQuestions.includes('breaking')
     },
     {
       type: 'input',
