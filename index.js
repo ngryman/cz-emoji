@@ -133,12 +133,6 @@ function createQuestions(config) {
       when: !config.skipQuestions.includes('body')
     },
     {
-      type: 'confirm',
-      name: 'isBreaking',
-      message: 'Are there any breaking changes?',
-      default: false
-    },
-    {
       type: 'input',
       name: 'breakingBody',
       message:
@@ -172,9 +166,10 @@ function format(answers) {
 
   const head = truncate(answers.subject, columns)
   const body = wrap(answers.body || '', columns)
-  const breaking = answers.isBreaking
-    ? wrap(`BREAKING CHANGE: ${answers.breakingBody.trim()}`, columns)
-    : ''
+  const breaking =
+    answers.breakingBody && answers.breakingBody.trim().length !== 0
+      ? wrap(`BREAKING CHANGE: ${answers.breakingBody.trim()}`, columns)
+      : ''
   const footer = formatIssues(answers.issues)
 
   return [head, body, breaking, footer]
