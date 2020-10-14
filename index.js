@@ -134,6 +134,13 @@ function createQuestions(config) {
     },
     {
       type: 'input',
+      name: 'breakingBody',
+      message:
+        'A BREAKING CHANGE commit requires a body. Please enter a longer description of the commit itself:\n',
+      when: !config.skipQuestions.includes('breaking')
+    },
+    {
+      type: 'input',
       name: 'issues',
       message:
         config.questions && config.questions.issues
@@ -157,9 +164,13 @@ function format(answers) {
 
   const head = truncate(answers.subject, columns)
   const body = wrap(answers.body || '', columns)
+  const breaking =
+    answers.breakingBody && answers.breakingBody.trim().length !== 0
+      ? wrap(`BREAKING CHANGE: ${answers.breakingBody.trim()}`, columns)
+      : ''
   const footer = formatIssues(answers.issues)
 
-  return [head, body, footer]
+  return [head, body, breaking, footer]
     .filter(Boolean)
     .join('\n\n')
     .trim()
