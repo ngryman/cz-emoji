@@ -148,6 +148,20 @@ An object that contains overrides of the original questions:
 }
 ```
 
+#### Customize the subject max length
+
+The maximum length you want your subject has
+
+```json
+{
+  "config": {
+    "cz-emoji": {
+      "subjectMaxLength": 200,
+    }
+  }
+}
+```
+
 ## Examples
 
 - https://github.com/Falieson/TRAM
