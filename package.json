@@ -27,6 +27,7 @@
     "cli-truncate": "^1.0.0",
     "find-up": "^5.0.0",
     "fuse.js": "^3.4.5",
+    "homedir": "^0.6.0",
     "inquirer-autocomplete-prompt": "^0.12.0",
     "inquirer-maxlength-input-prompt": "^1.0.1",
     "pad": "^2.3.0",

@@ -1,8 +1,10 @@
 const findUp = require('find-up')
 const fs = require('fs')
+const homedir = require('homedir')
 const truncate = require('cli-truncate')
 const wrap = require('wrap-ansi')
 const pad = require('pad')
+const path = require('path')
 const fuse = require('fuse.js')
 const util = require('util')
 
@@ -10,12 +12,14 @@ const readFile = util.promisify(fs.readFile)
 
 const types = require('./lib/types')
 
-function loadConfigFrom(filename) {
-  return findUp(filename)
-    .then(file => readFile(file, 'utf8'))
+function loadConfig(filename) {
+  return readFile(filename, 'utf8')
     .then(JSON.parse)
     .then(obj => obj && obj.config && obj.config['cz-emoji'])
-    .catch(() => null)
+}
+
+function loadConfigUpwards(filename) {
+  return findUp(filename).then(loadConfig)
 }
 
 async function getConfig() {
@@ -27,7 +31,10 @@ async function getConfig() {
     conventional: false
   }
 
-  const config = (await loadConfigFrom('package.json')) || (await loadConfigFrom('.czrc'))
+  const config =
+    (await loadConfigUpwards('package.json')) ||
+    (await loadConfigUpwards('.czrc')) ||
+    (await loadConfig(path.join(homedir(), '.czrc')))
 
   return { ...defaultConfig, ...config }
 }
