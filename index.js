@@ -1,21 +1,35 @@
+const findUp = require('find-up')
 const fs = require('fs')
-const readPkg = require('read-pkg-up')
 const truncate = require('cli-truncate')
 const wrap = require('wrap-ansi')
 const pad = require('pad')
-const path = require('path')
 const fuse = require('fuse.js')
-const homeDir = require('home-dir')
 const util = require('util')
+
+const readFile = util.promisify(fs.readFile)
 
 const types = require('./lib/types')
 
-const defaultConfig = {
-  types,
-  symbol: false,
-  skipQuestions: [''],
-  subjectMaxLength: 75,
-  conventional: false
+function loadConfigFrom(filename) {
+  return findUp(filename)
+    .then(file => readFile(file, 'utf8'))
+    .then(JSON.parse)
+    .then(obj => obj && obj.config && obj.config['cz-emoji'])
+    .catch(() => null)
+}
+
+async function getConfig() {
+  const defaultConfig = {
+    types,
+    symbol: false,
+    skipQuestions: [''],
+    subjectMaxLength: 75,
+    conventional: false
+  }
+
+  const config = (await loadConfigFrom('package.json')) || (await loadConfigFrom('.czrc'))
+
+  return { ...defaultConfig, ...config }
 }
 
 function getEmojiChoices({ types, symbol }) {
@@ -32,30 +46,6 @@ function getEmojiChoices({ types, symbol }) {
     },
     code: choice.code
   }))
-}
-
-async function loadConfig() {
-  const getConfig = obj => obj && obj.config && obj.config['cz-emoji']
-
-  const readFromPkg = async () => readPkg().then(res => (res ? getConfig(res.packageJson) : null))
-
-  const readFromCzrc = dir =>
-    util
-      .promisify(fs.readFile)(dir, 'utf8')
-      .then(JSON.parse, () => null)
-      .then(getConfig)
-
-  const readFromLocalCzrc = () =>
-    readPkg().then(res =>
-      res && res.path ? readFromCzrc(`${path.dirname(res.path)}/.czrc`) : null
-    )
-
-  const readFromGlobalCzrc = () => readFromCzrc(homeDir('.czrc'))
-
-  const config =
-    (await readFromPkg()) || (await readFromLocalCzrc()) || (await readFromGlobalCzrc())
-
-  return { ...defaultConfig, ...config }
 }
 
 function formatScope(scope) {
@@ -78,7 +68,7 @@ function formatIssues(issues) {
  * Create inquier.js questions object trying to read `types` and `scopes` from the current project
  * `package.json` falling back to nice default :)
  *
- * @param {Object} config Result of the `loadConfig` returned promise
+ * @param {Object} config Result of the `getConfig` returned promise
  * @return {Array} Return an array of `inquier.js` questions
  * @private
  */
@@ -175,7 +165,7 @@ module.exports = {
     cz.prompt.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
     cz.prompt.registerPrompt('maxlength-input', require('inquirer-maxlength-input-prompt'))
 
-    loadConfig()
+    getConfig()
       .then(createQuestions)
       .then(cz.prompt)
       .then(format)
