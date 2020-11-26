@@ -188,6 +188,12 @@ module.exports = {
 }
 ```
 
+## Other projects
+
+- [Fauda](https://github.com/ngryman/fauda): configuration made simple.
+- [Commitizen Emoji](https://github.com/ngryman/cz-emoji): Commitizen adapter formatting commit messages using emojis.
+- [Reading Time](https://github.com/ngryman/reading-time): Medium's like reading time estimation.
+
 ## License
 
 MIT © [Nicolas Gryman](http://ngryman.sh)
