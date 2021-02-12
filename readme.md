@@ -129,7 +129,7 @@ An array of questions you want to skip:
 }
 ```
 
-You can skip the following questions: `scope`, `body`, and `issues`. The `type` and `subject` questions are mandatory.
+You can skip the following questions: `scope`, `body`, `issues`, and `breaking`. The `type` and `subject` questions are mandatory.
 
 
 #### Customize Questions
