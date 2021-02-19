@@ -186,6 +186,12 @@
     "name": "config"
   },
   {
+    "emoji": "🔨",
+    "code": ":hammer:",
+    "description": "Adding or updating development scripts.",
+    "name": "dev-scripts"
+  },
+  {
     "emoji": "🌐",
     "code": ":globe_with_meridians:",
     "description": "Internationalization and localization.",
@@ -384,9 +390,39 @@
     "name": "flags"
   },
   {
+    "emoji": "🥅",
+    "code": ":goal_net:",
+    "description": "Catching errors.",
+    "name": "catch"
+  },
+  {
     "emoji": "💫",
     "code": ":dizzy:",
     "description": "Adding or updating animations and transitions.",
     "name": "animation"
+  },
+  {
+    "emoji": "🗑",
+    "code": ":wastebasket:",
+    "description": "Deprecating code that needs to be cleaned up.",
+    "name": "deprecate"
+  },
+  {
+    "emoji": "🛂",
+    "code": ":passport_control:",
+    "description": "Working on code related to authorization, roles and permissions.",
+    "name": "perms"
+  },
+  {
+    "emoji": "🩹",
+    "code": ":adhesive_bandage:",
+    "description": "Simple fixing for a non-critical issue.",
+    "name": "simple-fix"
+  },
+  {
+    "emoji": "🧐",
+    "code": ":monocle_face:",
+    "description": "Data exploration/inspection.",
+    "name": "inspect"
   }
 ]
