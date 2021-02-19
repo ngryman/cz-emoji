@@ -27,13 +27,13 @@
     "emoji": "🚑",
     "code": ":ambulance:",
     "description": "Critical hotfix.",
-    "name": "quickfix"
+    "name": "hotfix"
   },
   {
     "emoji": "✨",
     "code": ":sparkles:",
     "description": "Introducing new features.",
-    "name": "feature"
+    "name": "feat"
   },
   {
     "emoji": "📝",
@@ -62,7 +62,7 @@
   {
     "emoji": "✅",
     "code": ":white_check_mark:",
-    "description": "Adding tests.",
+    "description": "Adding or updating tests.",
     "name": "test"
   },
   {
@@ -110,7 +110,7 @@
   {
     "emoji": "🚨",
     "code": ":rotating_light:",
-    "description": "Removing linter warnings.",
+    "description": "Removing compiler / linter warnings.",
     "name": "lint"
   },
   {
@@ -321,31 +321,31 @@
     "emoji": "📱",
     "code": ":iphone:",
     "description": "Working on responsive design.",
-    "name": "iphone"
+    "name": "responsive"
   },
   {
     "emoji": "🤡",
     "code": ":clown_face:",
     "description": "Mocking things.",
-    "name": "clown-face"
+    "name": "mocking"
   },
   {
     "emoji": "🥚",
     "code": ":egg:",
     "description": "Adding an easter egg.",
-    "name": "egg"
+    "name": "easter-egg"
   },
   {
     "emoji": "🙈",
     "code": ":see_no_evil:",
     "description": "Adding or updating a .gitignore file.",
-    "name": "see-no-evil"
+    "name": "gitignore"
   },
   {
     "emoji": "📸",
     "code": ":camera_flash:",
     "description": "Adding or updating snapshots.",
-    "name": "camera-flash"
+    "name": "snapshot"
   },
   {
     "emoji": "⚗",
