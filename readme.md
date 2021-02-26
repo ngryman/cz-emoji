@@ -162,6 +162,19 @@ The maximum length you want your subject has
 }
 ```
 
+#### Customize commit message format
+
+```json
+{
+  "config": {
+    "cz-emoji": {
+      "format": "{emoji} {scope} {subject}"
+    }
+  }
+}
+```
+
+#### Symbol
 ## Examples
 
 - https://github.com/Falieson/TRAM
