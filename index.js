@@ -8,14 +8,14 @@ const path = require('path')
 const fuse = require('fuse.js')
 const util = require('util')
 
-const readFile = util.promisify(fs.readFile)
-
 const types = require('./lib/types')
+
+const readFile = util.promisify(fs.readFile)
 
 function loadConfig(filename) {
   return readFile(filename, 'utf8')
     .then(JSON.parse)
-    .then(obj => obj && obj.config && obj.config['cz-emoji'])
+    .then((obj) => obj && obj.config && obj.config['cz-emoji'])
     .catch(() => null)
 }
 
@@ -29,7 +29,7 @@ async function getConfig() {
     symbol: false,
     skipQuestions: [''],
     subjectMaxLength: 75,
-    conventional: false
+    format: '{emoji} {scope} {subject}',
   }
 
   const config =
@@ -37,7 +37,12 @@ async function getConfig() {
     (await loadConfigUpwards('.czrc')) ||
     (await loadConfig(path.join(homedir(), '.czrc')))
 
-  return { ...defaultConfig, ...config }
+  configs = { ...defaultConfig, ...config }
+  return {
+    configs,
+    ...defaultConfig,
+    ...config,
+  }
 }
 
 function getEmojiChoices({ types, symbol }) {
@@ -46,26 +51,14 @@ function getEmojiChoices({ types, symbol }) {
     0
   )
 
-  return types.map(choice => ({
+  return types.map((choice) => ({
     name: `${pad(choice.name, maxNameLength)}  ${choice.emoji}  ${choice.description}`,
     value: {
       emoji: symbol ? `${choice.emoji} ` : choice.code,
-      name: choice.name
+      name: choice.name,
     },
-    code: choice.code
+    code: choice.code,
   }))
-}
-
-function formatScope(scope) {
-  return scope ? `(${scope})` : ''
-}
-
-function formatHead({ type, scope, subject }, config) {
-  const prelude = config.conventional
-    ? `${type.name}${formatScope(scope)}: ${type.emoji}`
-    : `${type.emoji} ${formatScope(scope)}`
-
-  return `${prelude} ${subject}`
 }
 
 function formatIssues(issues) {
@@ -90,7 +83,7 @@ function createQuestions(config) {
     distance: 100,
     maxPatternLength: 32,
     minMatchCharLength: 1,
-    keys: ['name', 'code']
+    keys: ['name', 'code'],
   })
 
   const questions = [
@@ -101,7 +94,7 @@ function createQuestions(config) {
         config.questions && config.questions.type
           ? config.questions.type
           : "Select the type of change you're committing:",
-      source: (_, query) => Promise.resolve(query ? fuzzy.search(query) : choices)
+      source: (_, query) => Promise.resolve(query ? fuzzy.search(query) : choices),
     },
     {
       type: config.scopes ? 'list' : 'input',
@@ -109,7 +102,7 @@ function createQuestions(config) {
       message:
         config.questions && config.questions.scope ? config.questions.scope : 'Specify a scope:',
       choices: config.scopes && [{ name: '[none]', value: '' }].concat(config.scopes),
-      when: !config.skipQuestions.includes('scope')
+      when: !config.skipQuestions.includes('scope'),
     },
     {
       type: 'maxlength-input',
@@ -119,7 +112,6 @@ function createQuestions(config) {
           ? config.questions.subject
           : 'Write a short description:',
       maxLength: config.subjectMaxLength,
-      filter: (subject, answers) => formatHead({ ...answers, subject }, config)
     },
     {
       type: 'input',
@@ -128,14 +120,14 @@ function createQuestions(config) {
         config.questions && config.questions.body
           ? config.questions.body
           : 'Provide a longer description:',
-      when: !config.skipQuestions.includes('body')
+      when: !config.skipQuestions.includes('body'),
     },
     {
       type: 'input',
       name: 'breakingBody',
       message:
         'A BREAKING CHANGE commit requires a body. Please enter a longer description of the commit itself:\n',
-      when: !config.skipQuestions.includes('breaking')
+      when: !config.skipQuestions.includes('breaking'),
     },
     {
       type: 'input',
@@ -144,8 +136,8 @@ function createQuestions(config) {
         config.questions && config.questions.issues
           ? config.questions.issues
           : 'List any issue closed (#1, #2, ...):',
-      when: !config.skipQuestions.includes('issues')
-    }
+      when: !config.skipQuestions.includes('issues'),
+    },
   ]
 
   return questions
@@ -155,12 +147,27 @@ function createQuestions(config) {
  * Format the git commit message from given answers.
  *
  * @param {Object} answers Answers provide by `inquier.js`
+ * @param {Object} config Result of the `getConfig` returned promise
  * @return {String} Formated git commit message
  */
-function format(answers) {
+
+function format(answers, config) {
+  const format = config.format
+
   const { columns } = process.stdout
 
-  const head = truncate(answers.subject, columns)
+  const emoji = answers.type
+  const type = types.find((type) => type.code === emoji.emoji).name
+  const scope = answers.scope ? '(' + answers.scope.trim() + ')' : ''
+  const subject = answers.subject.trim()
+
+  const commitMessage = format
+    .replace(/\{emoji\}/g, emoji.emoji)
+    .replace(/\{type\}/g, type)
+    .replace(/\{scope\}/g, scope)
+    .replace(/\{subject\}/g, subject)
+
+  const head = truncate(commitMessage, columns)
   const body = wrap(answers.body || '', columns)
   const breaking =
     answers.breakingBody && answers.breakingBody.trim().length !== 0
@@ -168,10 +175,7 @@ function format(answers) {
       : ''
   const footer = formatIssues(answers.issues)
 
-  return [head, body, breaking, footer]
-    .filter(Boolean)
-    .join('\n\n')
-    .trim()
+  return [head, body, breaking, footer].filter(Boolean).join('\n\n').trim()
 }
 
 /**
@@ -180,14 +184,14 @@ function format(answers) {
  * @type {Object}
  */
 module.exports = {
-  prompter: function(cz, commit) {
+  prompter: function (cz, commit) {
     cz.prompt.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
     cz.prompt.registerPrompt('maxlength-input', require('inquirer-maxlength-input-prompt'))
 
     getConfig()
       .then(createQuestions)
       .then(cz.prompt)
-      .then(format)
+      .then((answers) => format(answers, configs))
       .then(commit)
-  }
+  },
 }
