@@ -165,6 +165,10 @@ function formatCommitMessage(answers, config) {
     .replace('{type}', type)
     .replace('{scope}', scope)
     .replace('{subject}', subject)
+    // Only allow at most one whitespace.
+    // When an optional field (ie. `scope`) is not specified, it can leave several consecutive
+    // whitespaces in the final message.
+    .replace(/\s+/g, ' ')
 
   const head = truncate(commitMessage, columns)
   const body = wrap(answers.body || '', columns)
@@ -187,11 +191,11 @@ function formatCommitMessage(answers, config) {
  * @return {String} Git message provided by the user
  */
 async function promptCommitMessage(cz) {
-    cz.prompt.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
-    cz.prompt.registerPrompt('maxlength-input', require('inquirer-maxlength-input-prompt'))
+  cz.prompt.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
+  cz.prompt.registerPrompt('maxlength-input', require('inquirer-maxlength-input-prompt'))
 
   const config = await getConfig()
-    const questions = createQuestions(config)
+  const questions = createQuestions(config)
   const answers = await cz.prompt(questions)
   const message = formatCommitMessage(answers, config)
 
