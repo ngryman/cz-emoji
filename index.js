@@ -24,21 +24,26 @@ function loadConfigUpwards(filename) {
 }
 
 async function getConfig() {
+  const defaultFormat = '{emoji} {scope} {subject}'
+  const conventionalFormat = `{type}{scope}: {emoji} {subject}`
+
   const defaultConfig = {
     types,
     symbol: false,
     skipQuestions: [''],
     subjectMaxLength: 75,
-    conventional: false,
-    format: '{emoji} {scope} {subject}'
+    conventional: false
   }
 
-  const config =
+  const loadedConfig =
     (await loadConfigUpwards('package.json')) ||
     (await loadConfigUpwards('.czrc')) ||
     (await loadConfig(path.join(homedir(), '.czrc')))
 
-  return { ...defaultConfig, ...config }
+  const config = { ...defaultConfig, ...loadedConfig }
+  config.format = config.conventional ? conventionalFormat : defaultFormat
+
+  return config
 }
 
 function getEmojiChoices({ types, symbol }) {
@@ -148,8 +153,6 @@ function createQuestions(config) {
  */
 
 function formatCommitMessage(answers, config) {
-  const format = config.conventional ? `{type}{scope}: {emoji} {subject}` : config.format
-
   const { columns } = process.stdout
 
   const emoji = answers.type
@@ -157,11 +160,11 @@ function formatCommitMessage(answers, config) {
   const scope = answers.scope ? '(' + answers.scope.trim() + ')' : ''
   const subject = answers.subject.trim()
 
-  const commitMessage = format
-    .replaceAll('{emoji}', emoji.emoji)
-    .replaceAll('{type}', type)
-    .replaceAll('{scope}', scope)
-    .replaceAll('{subject}', subject)
+  const commitMessage = config.format
+    .replace('{emoji}', emoji.emoji)
+    .replace('{type}', type)
+    .replace('{scope}', scope)
+    .replace('{subject}', subject)
 
   const head = truncate(commitMessage, columns)
   const body = wrap(answers.body || '', columns)
@@ -178,25 +181,30 @@ function formatCommitMessage(answers, config) {
 }
 
 /**
+ * Interactively prompts the git commit message to the user.
+ *
+ * @param {commitizen} cz Commitizen object
+ * @return {String} Git message provided by the user
+ */
+async function promptCommitMessage(cz) {
+    cz.prompt.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
+    cz.prompt.registerPrompt('maxlength-input', require('inquirer-maxlength-input-prompt'))
+
+  const config = await getConfig()
+    const questions = createQuestions(config)
+  const answers = await cz.prompt(questions)
+  const message = formatCommitMessage(answers, config)
+
+  return message
+}
+
+/**
  * Export an object containing a `prompter` method. This object is used by `commitizen`.
  *
  * @type {Object}
  */
 module.exports = {
-  prompter: function(cz, commit) {
-    cz.prompt.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
-    cz.prompt.registerPrompt('maxlength-input', require('inquirer-maxlength-input-prompt'))
-
-    //getConfig()
-    //  .then(createQuestions)
-    //  .then(cz.prompt)
-    //  .then(answers => format(answers, config))
-    //  .then(commit)
-    const config = getConfig()
-    const questions = createQuestions(config)
-    const answers = cz.prompt(questions)
-    const commitMessage = formatCommitMessage(answers, config)
-
-    commit(commitMessage)
+  prompter: (cz, commit) => {
+    promptCommitMessage(cz).then(commit)
   }
 }
