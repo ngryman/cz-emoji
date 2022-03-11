@@ -41,7 +41,7 @@ async function getConfig() {
     (await loadConfig(path.join(homedir(), '.czrc')))
 
   const config = { ...defaultConfig, ...loadedConfig }
-  config.format = config.conventional ? conventionalFormat : defaultFormat
+  config.format = config.format ? config.format : (config.conventional ? conventionalFormat : defaultFormat)
 
   return config
 }
