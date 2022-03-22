@@ -63,7 +63,7 @@ function getEmojiChoices({ types, symbol }) {
 }
 
 function formatIssues(issues) {
-  return issues ? 'Closes ' + (issues.match(/#\d+/g) || []).join(', closes ') : ''
+  return issues ? 'Closes ' + (issues.match(/BM-\d+/g) || []).join(', closes ') : ''
 }
 
 /**
