@@ -133,7 +133,9 @@ function createQuestions(config) {
       type: 'input',
       name: 'breakingBody',
       message:
-        'A BREAKING CHANGE commit requires a body. Please enter a longer description of the commit itself:\n',
+        config.questions && config.questions.breaking
+          ? config.questions.breaking
+          : 'A BREAKING CHANGE commit requires a body. Please enter a longer description of the commit itself:\n',
       when: !config.skipQuestions.includes('breaking')
     },
     {
