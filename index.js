@@ -8,9 +8,9 @@ const path = require('path')
 const fuse = require('fuse.js')
 const util = require('util')
 
-const readFile = util.promisify(fs.readFile)
-
 const types = require('./lib/types')
+
+const readFile = util.promisify(fs.readFile)
 
 function loadConfig(filename) {
   return readFile(filename, 'utf8')
@@ -24,6 +24,9 @@ function loadConfigUpwards(filename) {
 }
 
 async function getConfig() {
+  const defaultFormat = '{emoji} {scope} {subject}'
+  const conventionalFormat = `{type}{scope}: {emoji} {subject}`
+
   const defaultConfig = {
     types,
     symbol: false,
@@ -32,12 +35,21 @@ async function getConfig() {
     conventional: false
   }
 
-  const config =
+  const loadedConfig =
     (await loadConfigUpwards('package.json')) ||
     (await loadConfigUpwards('.czrc')) ||
-    (await loadConfig(path.join(homedir(), '.czrc')))
+    (await loadConfig(path.join(homedir(), '.czrc'))) ||
+    {}
 
-  return { ...defaultConfig, ...config }
+  const config = {
+    ...defaultConfig,
+    ...{
+      format: loadedConfig.conventional ? conventionalFormat : defaultFormat
+    },
+    ...loadedConfig
+  }
+
+  return config
 }
 
 function getEmojiChoices({ types, symbol }) {
@@ -54,18 +66,6 @@ function getEmojiChoices({ types, symbol }) {
     },
     code: choice.code
   }))
-}
-
-function formatScope(scope) {
-  return scope ? `(${scope})` : ''
-}
-
-function formatHead({ type, scope, subject }, config) {
-  const prelude = config.conventional
-    ? `${type.name}${formatScope(scope)}: ${type.emoji}`
-    : `${type.emoji} ${formatScope(scope)}`
-
-  return `${prelude} ${subject}`
 }
 
 function formatIssues(issues) {
@@ -118,8 +118,7 @@ function createQuestions(config) {
         config.questions && config.questions.subject
           ? config.questions.subject
           : 'Write a short description:',
-      maxLength: config.subjectMaxLength,
-      filter: (subject, answers) => formatHead({ ...answers, subject }, config)
+      maxLength: config.subjectMaxLength
     },
     {
       type: 'input',
@@ -155,12 +154,29 @@ function createQuestions(config) {
  * Format the git commit message from given answers.
  *
  * @param {Object} answers Answers provide by `inquier.js`
- * @return {String} Formated git commit message
+ * @param {Object} config Result of the `getConfig` returned promise
+ * @return {String} Formatted git commit message
  */
-function format(answers) {
+
+function formatCommitMessage(answers, config) {
   const { columns } = process.stdout
 
-  const head = truncate(answers.subject, columns)
+  const emoji = answers.type
+  const type = config.types.find(type => type.code === emoji.emoji).name
+  const scope = answers.scope ? '(' + answers.scope.trim() + ')' : ''
+  const subject = answers.subject.trim()
+
+  const commitMessage = config.format
+    .replace(/{emoji}/g, emoji.emoji)
+    .replace(/{type}/g, type)
+    .replace(/{scope}/g, scope)
+    .replace(/{subject}/g, subject)
+    // Only allow at most one whitespace.
+    // When an optional field (ie. `scope`) is not specified, it can leave several consecutive
+    // white spaces in the final message.
+    .replace(/\s+/g, ' ')
+
+  const head = truncate(commitMessage, columns)
   const body = wrap(answers.body || '', columns)
   const breaking =
     answers.breakingBody && answers.breakingBody.trim().length !== 0
@@ -175,19 +191,30 @@ function format(answers) {
 }
 
 /**
+ * Interactively prompts the git commit message to the user.
+ *
+ * @param {commitizen} cz Commitizen object
+ * @return {String} Git message provided by the user
+ */
+async function promptCommitMessage(cz) {
+  cz.prompt.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
+  cz.prompt.registerPrompt('maxlength-input', require('inquirer-maxlength-input-prompt'))
+
+  const config = await getConfig()
+  const questions = createQuestions(config)
+  const answers = await cz.prompt(questions)
+  const message = formatCommitMessage(answers, config)
+
+  return message
+}
+
+/**
  * Export an object containing a `prompter` method. This object is used by `commitizen`.
  *
  * @type {Object}
  */
 module.exports = {
-  prompter: function(cz, commit) {
-    cz.prompt.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
-    cz.prompt.registerPrompt('maxlength-input', require('inquirer-maxlength-input-prompt'))
-
-    getConfig()
-      .then(createQuestions)
-      .then(cz.prompt)
-      .then(format)
-      .then(commit)
+  prompter: (cz, commit) => {
+    promptCommitMessage(cz).then(commit)
   }
 }
