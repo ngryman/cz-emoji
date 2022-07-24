@@ -38,10 +38,16 @@ async function getConfig() {
   const loadedConfig =
     (await loadConfigUpwards('package.json')) ||
     (await loadConfigUpwards('.czrc')) ||
-    (await loadConfig(path.join(homedir(), '.czrc')))
+    (await loadConfig(path.join(homedir(), '.czrc'))) ||
+    {}
 
-  const config = { ...defaultConfig, ...loadedConfig }
-  config.format = config.conventional ? conventionalFormat : defaultFormat
+  const config = {
+    ...defaultConfig,
+    ...{
+      format: loadedConfig.conventional ? conventionalFormat : defaultFormat
+    },
+    ...loadedConfig
+  }
 
   return config
 }
@@ -156,18 +162,18 @@ function formatCommitMessage(answers, config) {
   const { columns } = process.stdout
 
   const emoji = answers.type
-  const type = types.find(type => type.code === emoji.emoji).name
+  const type = config.types.find(type => type.code === emoji.emoji).name
   const scope = answers.scope ? '(' + answers.scope.trim() + ')' : ''
   const subject = answers.subject.trim()
 
   const commitMessage = config.format
-    .replace('{emoji}', emoji.emoji)
-    .replace('{type}', type)
-    .replace('{scope}', scope)
-    .replace('{subject}', subject)
+    .replace(/{emoji}/g, emoji.emoji)
+    .replace(/{type}/g, type)
+    .replace(/{scope}/g, scope)
+    .replace(/{subject}/g, subject)
     // Only allow at most one whitespace.
     // When an optional field (ie. `scope`) is not specified, it can leave several consecutive
-    // whitespaces in the final message.
+    // white spaces in the final message.
     .replace(/\s+/g, ' ')
 
   const head = truncate(commitMessage, columns)
