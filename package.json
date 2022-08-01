@@ -1,6 +1,6 @@
 {
   "name": "cz-emoji",
-  "version": "1.3.2-canary.1",
+  "version": "1.3.2-canary.2",
   "description": "Commitizen adapter formatting commit messages using emojis.",
   "author": "Nicolas Gryman <ngryman@gmail.com> (http://ngryman.sh/)",
   "license": "MIT",
