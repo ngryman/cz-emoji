@@ -33,6 +33,6 @@
     "pad": "^2.3.0",
     "prettier": "^1.18.2",
     "read-pkg-up": "^7.0.1",
-    "wrap-ansi": "^8.0.1"
+    "wrap-ansi": "^7.0.0"
   }
 }
