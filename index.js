@@ -164,7 +164,7 @@ function formatCommitMessage(answers, config) {
   const { columns } = process.stdout
 
   const emoji = answers.type
-  const type = config.types.find(type => type.code === emoji.emoji).name
+  const type = config.types.find(type => type.name === emoji.name).name
   const scope = answers.scope ? '(' + answers.scope.trim() + ')' : ''
   const subject = answers.subject.trim()
 
