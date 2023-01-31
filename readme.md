@@ -40,6 +40,16 @@ Add this to your `package.json`:
 }
 ```
 
+When use pnpm:
+
+```json
+"config": {
+  "commitizen": {
+    "path": "node_modules/cz-emoji"
+  }
+}
+```
+
 ## Usage
 
 ```sh
