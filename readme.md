@@ -131,7 +131,6 @@ An array of questions you want to skip:
 
 You can skip the following questions: `scope`, `body`, `issues`, and `breaking`. The `type` and `subject` questions are mandatory.
 
-
 #### Customize Questions
 
 An object that contains overrides of the original questions:
@@ -156,7 +155,7 @@ The maximum length you want your subject has
 {
   "config": {
     "cz-emoji": {
-      "subjectMaxLength": 200,
+      "subjectMaxLength": 200
     }
   }
 }
@@ -168,25 +167,46 @@ The maximum length you want your subject has
 
 ## Commitlint
 
-Commitlint can be set to work with this package by leveraging the package https://github.com/arvinxx/commitlint-config-gitmoji.
-
-```bash
-npm install --save-dev commitlint-config-gitmoji
-```
+Commitlint can be set to work with this package with the following configuration:
 
 _commitlint.config.js_
 
 ```js
+const pkg = require('./package.json')
+
+// Check if the user has configured the package to use conventional commits.
+const isConventional = pkg.config ? pkg.config['cz-emoji']?.conventional : false
+
+// Regex for default and conventional commits.
+const RE_DEFAULT_COMMIT = /^(?::.*:|(?:\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]))\s(?<emoji>\((?<scope>.*)\)\s)?.*$/gm
+const RE_CONVENTIONAL_COMMIT = /^^(?<type>\w+)(?:\((?<scope>\w+)\))?\s(?<emoji>:.*:|(?:\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]))\s.*$/gm
+
 module.exports = {
-  extends: ['gitmoji'],
-  parserPreset: {
-    parserOpts: {
-      headerPattern: /^(:\w*:)(?:\s)(?:\((.*?)\))?\s((?:.*(?=\())|.*)(?:\(#(\d*)\))?/,
-      headerCorrespondence: ['type', 'scope', 'subject', 'ticket']
+  rules: {
+    'cz-emoji': [2, 'always']
+  },
+  plugins: [
+    {
+      rules: {
+        'cz-emoji': ({ raw }) => {
+          const isValid = isConventional
+            ? RE_CONVENTIONAL_COMMIT.test(raw)
+            : RE_DEFAULT_COMMIT.test(raw)
+
+          const message = isConventional
+            ? `Your commit message should follow conventional commit format.`
+            : `Your commit message should be: <emoji> (<scope>)?: <subject>`
+
+          return [isValid, message]
+        }
+      }
     }
-  }
+  ]
 }
 ```
+
+_Let me know if you are interested in having the above configuration published
+as a `commitlint` plugin._
 
 ## Other projects
 
